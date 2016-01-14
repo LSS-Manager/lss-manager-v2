@@ -14,7 +14,7 @@
 
 $('head').append('<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">');
 $('head').append('<link href="https://fonts.googleapis.com/css?family=Titillium+Web" rel="stylesheet" type="text/css">');
-$(".logo").after("</a><a href='http://forum.leitstellenspiel.de/index.php/Thread/8077-REDESIGNS-by-lost/' style='font-size:12px; font-weight:600; top:20px; left:14%; color:#fff; position:absolute;'><p>made with <i class='fa fa-heart' style='color:orange; font-size: 14px;'></i> by lost</p>");
+$(".logo").after("</a><a href='http://forum.leitstellenspiel.de/index.php/Thread/8077-REDESIGNS-by-lost/' style='font-size:12px; font-weight:600; top:20px; left:14%; color:#fff; position:absolute;'><p>made with <i class='fa fa-heart' style='color:orange; font-size: 14px;'></i> by lost (BETA VERSION)</p>");
 
 
 // Custom CSS --------------------------------------------------------------------------------------------------------------------------------
@@ -360,6 +360,10 @@ $("#news_li").before('<div class="col-sm-4 overview_outer" id="settings_outer"><
 $("#radio_outer").css("display", "none");
 $("#buildings_outer").css("display", "none");
 $("#chat_outer").css("display", "none");
+$("#chat_outer").css("opacity", "0");
+$("#buildings_outer").css("opacity", "0");
+$("#radio_outer").css("opacity", "0");
+$("#settings_outer").css("opacity", "0");
 
 
 // <li id="enable-map"><a href="#"><i class="fa fa-power-off"></i> Map</a></li><li id="map-fw"><a href="#">Map full</a></li>
@@ -384,6 +388,12 @@ $('#thw-design').click(function() {
 });
 
 $('#missions-aa').click(function() {
+    $("#buildings_outer").css("opacity", "0");
+    $("#chat_outer").css("opacity", "0");
+    $("#radio_outer").css("opacity", "0");
+    $("#settings_outer").css("opacity", "0");
+    
+    $("#missions_outer").delay(0).animate({ opacity: 1 }, 600);
     $("#missions_outer").css("display", "");
     $("#radio_outer").css("display", "none");
     $("#buildings_outer").css("display", "none");
@@ -391,32 +401,74 @@ $('#missions-aa').click(function() {
 });
 
 $('#chat-aa').click(function() {
+    $("#missions_outer").css("opacity", "0");
+    $("#buildings_outer").css("opacity", "0");
+    $("#radio_outer").css("opacity", "0");
+    $("#settings_outer").css("opacity", "0");
+    
+    $("#chat_outer").delay(0).animate({ opacity: 1 }, 600);
     $("#missions_outer").css("display", "none");
     $("#radio_outer").css("display", "none");
     $("#buildings_outer").css("display", "none");
     $("#chat_outer").css("display", "");
+    $("#missions_outer").css("opacity", "0");
 });
 
 $('#gebl-aa').click(function() {
+    $("#missions_outer").css("opacity", "0");
+    $("#chat_outer").css("opacity", "0");
+    $("#radio_outer").css("opacity", "0");
+    $("#settings_outer").css("opacity", "0");
+    
+    $("#buildings_outer").delay(0).animate({ opacity: 1 }, 600);
     $("#missions_outer").css("display", "none");
     $("#radio_outer").css("display", "none");
     $("#buildings_outer").css("display", "");
     $("#chat_outer").css("display", "none");
+    
+    $("#missions_outer").css("opacity", "0");
 });
 
 $('#funkl-aa').click(function() {
+    $("#missions_outer").css("opacity", "0");
+    $("#buildings_outer").css("opacity", "0");
+    $("#chat_outer").css("opacity", "0");
+    $("#settings_outer").css("opacity", "0");
+    
+    $("#radio_outer").delay(0).animate({ opacity: 1 }, 600);
     $("#missions_outer").css("display", "none");
     $("#radio_outer").css("display", "");
     $("#buildings_outer").css("display", "none");
     $("#chat_outer").css("display", "none");
+    
+
+
 });
 
 $('#lss_setting').click(function() {
+    $("#missions_outer").css("opacity", "0");
+    $("#buildings_outer").css("opacity", "0");
+    $("#chat_outer").css("opacity", "0");
+    $("#radio_outer").css("opacity", "0");
+    
+    $("#settings_outer").delay(0).animate({ opacity: 1 }, 600);
     $("#missions_outer").css("display", "none");
     $("#radio_outer").css("display", "none");
     $("#buildings_outer").css("display", "none");
     $("#chat_outer").css("display", "none");
     $("#settings_outer").css("display", "");
+    
+        $("#missions_outer").css("left", "");
+        $("#missions_outer").css("width", "35%");
+        
+        $("#buildings_outer").css("margin-left", "66%");
+        $("#buildings_outer").css("width", "35%");
+        
+        $("#chat_outer").css("margin-left", "66%");
+        $("#chat_outer").css("width", "35%");
+
+        $("#radio_outer").css("width", "35%");
+        $("#map-switch").css("background-color","");
 });
 
 $('#s-v4').click(function() {
@@ -478,17 +530,17 @@ var handlers = [
     function() {
         $("#map").css("display", "none");
         $("#missions_outer").css("left", "0");
-        $("#missions_outer").css("right", "500");
+        $("#missions_outer").css("right", "asdf");
         $("#missions_outer").css("width", "25%");
         $("#missions_outer").css("display", "");
         
         $("#buildings_outer").css("margin-left", "26%");
-        $("#buildings_outer").css("right", "500");
+        $("#buildings_outer").css("right", "asdf");
         $("#buildings_outer").css("width", "25%");
         $("#buildings_outer").css("display", "");
         
         $("#chat_outer").css("margin-left", "51%");
-        $("#chat_outer").css("right", "500");
+        $("#chat_outer").css("right", "asdf");
         $("#chat_outer").css("width", "25%");
         $("#chat_outer").css("display", "");
         
@@ -497,6 +549,7 @@ var handlers = [
         $("#radio_outer").css("right", "0");
         
         $("#settings_outer").css("display", "none");
+        $("#map-switch").css("background-color","green"); 
         
     },
 
@@ -504,19 +557,6 @@ var handlers = [
     function() {
         $("#map").css("display", "");
         
-        $("#missions_outer").css("right", "0");
-        $("#missions_outer").css("left", "");
-        $("#missions_outer").css("width", "35%");
-        
-        $("#buildings_outer").css("right", "0");
-        $("#buildings_outer").css("left", "");
-        $("#buildings_outer").css("width", "35%");
-        
-        $("#chat_outer").css("left", "");
-        $("#chat_outer").css("right", "0");
-        $("#chat_outer").css("width", "35%");
-
-        $("#radio_outer").css("width", "35%");
 
 
     }
@@ -527,5 +567,7 @@ $("#map-switch").click(function() {
     handlers[counter++].apply(this, Array.prototype.slice.apply(arguments));
     counter %= handlers.length;
 });
+
+
 
 // Design Funktionen Ende ------------------------------------------------------------------------------------------------------------------------------------------------
