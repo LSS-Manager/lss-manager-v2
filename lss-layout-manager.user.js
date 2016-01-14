@@ -177,7 +177,7 @@ $(".logo").after("</a><a href='http://forum.leitstellenspiel.de/index.php/Thread
     "	position: absolute;",
 	"}",
 	"",
-	"#chat_outer .panel-heading, #radio_outer .panel-heading, #buildings_outer .panel-heading {",
+	"#chat_outer .panel-heading, #radio_outer .panel-heading, #buildings_outer .panel-heading, #settings_outer .panel-heading, #missions_outer .panel-heading {",
 	"	background-color: #e74c3c;",
 	"	color: #fff;",
 	"}",
@@ -282,11 +282,8 @@ $("a:contains('Sprechwunsch bearbeiten')").attr('id', 'sprechwunsch-bearbeiten')
 $("a:contains('Zurück zum Einsatz')").attr('id', 'zurück-einsatz');
 $("a:contains('Anfahren')").attr('id', 'nächstes-krankenhaus');
 $("a:contains('Rückalarmieren')").attr('id', 'lf-zurück');
-$("a:contains('Direkt fertigstellen')").css('display', 'none');
-$("a:contains('lightbox-open')").attr('id', 'spwoe');
 $("small:contains('Fahrzeuge ausgeblendet.')").css('display', 'none');
-
-
+$("div[id^='mission_panel_heading']").css("background-color", "#f5f5f5").css("color","#34495e");
 
 $(document).keydown(function(e) {
 
@@ -309,9 +306,7 @@ $(document).keydown(function(e) {
     } else if (e.keyCode == 81) {
         // Q Sprechwunsch
         $("#sprechwunsch-bearbeiten")[0].click();
-        $("#spwoe")[0].click();
-        
-
+     
     } else if (e.keyCode == 49) {
         // 1 1. krankenhaus
         $("#nächstes-krankenhaus")[0].click();
@@ -337,23 +332,32 @@ $(document).keydown(function(e) {
         $("#zurück-einsatz")[0].click();
 
     } else if (e.keyCode == 69) {
-        // R zurück zum Einsatz
+        // E 1.fz zurück
         $("#lf-zurück")[0].click();
-
+        
+    } else if (e.keyCode == 88) {
+        // X Alarmieren
+        $("#mission_alarm_btn")[0].click();
+        
+    } else if (e.keyCode == 89) {
+        // Y Erster Einsatz auf
+        $("a[href^='/missions']")[0].click();
     }
     
     return e.returnValue;
 
 });
 // Tastatur Alarmierung Ende ----------------------------------------------------------------------------------------------------------------
+//wichtiges : $("a[href^='/missions']")[0].click(); $("#lf-zurück")[0].click();
 
-
-
-
+map.on('click', function(e) {
+    alert(e.latlng); // e is an event object (MouseEvent in this case)
+    map.updateSize();
+});
 
 // Design Funktionen ------------------------------------------------------------------------------------------------------------------------------------------------
 
-$("#news_li").before('<div class="col-sm-4 overview_outer" id="settings_outer"><div id="settingsl“ class="sidebar-nav"><div class="panel panel-default"><div class="panel-heading">Einstellungen</div><div class="panel-body"><h4 style="line-height:0.5;">Design Farben</h4><a href="#" id="rtw-design" class="btn btn-xs btn-info">Gelb</a><a href="#" id="pol-design" class="btn btn-xs btn-info">Grün</a><a href="#" id="thw-design" class="btn btn-xs btn-info">Blau</a><a href="#" id="orange-design" class="btn btn-xs btn-info">Orange</a><a href="#" id="pink-design" class="btn btn-xs btn-info">Pink</a><a href="#" id="grau-design" class="btn btn-xs btn-info">Grau</a><a href="#" id="reset" class="btn btn-xs btn-danger">Zurücksetzen</a><br><br><h4 style="line-height:0.5;">Layout Einstellungen</h4><a href="#" id="map-switch" class="btn btn-xs btn-info"><i class="fa fa-power-off"></i> Map</a><a href="#" id="s-v4" class="btn btn-xs btn-info disabled">Version 4</a><a href="#" id="s-v5" class="btn btn-xs btn-info disabled" style="pointer-events: disabled;">Version 5</a><a href="#" id="s-v6" class="btn btn-xs btn-info disabled" style="pointer-events: disabled !important;">Version 6</a><a href="#" id="s-v7" class="btn btn-xs btn-info disabled" style="pointer-events: disabled;">Version 7</a><br><br><h4 style="line-height:0.5;">Tastatur Alarmierung</h4><kbd>W</kbd> = Im Verband freigeben <br><kbd>S</kbd> = Alarmieren & weiter<br><kbd>A</kbd> = Vorheriger Einsatz<br><kbd>D</kbd> = Nächster Einsatz<br><kbd>E</kbd> = 1. Fahrzeug vom Einsatz rückalarmieren<br><kbd>Q</kbd> = Sprechwunsch bearbeiten<br><kbd>R</kbd> = Zurück zum Einsatz<br><kbd>1 - 5</kbd> = 1. - 5. Krankenhaus anfahren<br><br><h4 style="line-height:0.5;">Geplante Features, bekannte Fehler & sonstiges</h4><ul><li>FEHLER: Karte lädt nicht vollständig</li><li>FEHLER: RD Design Schriftfarbe</li><li>GEPLANT: Mehr Layouts</li><li>GEPLANT: Schrift auswahl</li><li>GEPLANT: IconSwitcher</li><li>GEPLANT: Blinken der FMS 5 für Firefox</li><li>GEPLANT: Fehlerbehebungen</li><li>GEPLANT: Design Anpassungen</li></ul><br><br><p>Es handelt sich immer noch um eine Beta Version, ich bin für keine Schäden verantwortlich. Das Script steht in keinem Bezug zum Leitstellenspiel.de. Abänderungen sind erlaubt, das veröffentlichen jedoch nicht. <br>Vielen dank an <a href="http://forum.leitstellenspiel.de/index.php/User/757-Eagle/">@Eagle</a>, der meinen Code verbessert hat :D.<p><a href="http://forum.leitstellenspiel.de/index.php/Thread/8077-REDESIGNS-by-lost/" style="font-size:12px; font-weight:600;"><p>made with <i class="fa fa-heart" style="color:red; font-size: 14px;"></i> by lost (BETA VERSION)</a><p style="font-size:8px;">Verband Feuerwehr München & Umgebung</p></p></div></div></div></div>');
+$("#news_li").before('<div class="col-sm-4 overview_outer" id="settings_outer"><div id="settingsl“ class="sidebar-nav"><div class="panel panel-default"><div class="panel-heading">Einstellungen</div><div class="panel-body"><h4 style="line-height:0.5;">Design Farben</h4><a href="#" id="rot-design" style="background-color:#e74c3c;" class="btn btn-xs btn-info">Rot</a><a href="#" id="rtw-design" class="btn btn-xs btn-info">Gelb</a><a href="#" id="pol-design" class="btn btn-xs btn-info">Grün</a><a href="#" id="thw-design" class="btn btn-xs btn-info">Blau</a><a href="#" id="orange-design" class="btn btn-xs btn-info">Orange</a><a href="#" id="pink-design" class="btn btn-xs btn-info">Pink</a><a href="#" id="grau-design" class="btn btn-xs btn-info">Grau</a><a href="#" id="reset" class="btn btn-xs btn-danger">Zurücksetzen</a><br><br><h4 style="line-height:0.5;">Layout Einstellungen</h4><a href="#" id="map-switch" class="btn btn-xs btn-info"><i class="fa fa-toggle-on"></i> Map</a><a href="#" id="s-v4" class="btn btn-xs btn-info disabled">Version 4</a><a href="#" id="s-v5" class="btn btn-xs btn-info disabled" style="pointer-events: disabled;">Version 5</a><a href="#" id="s-v6" class="btn btn-xs btn-info disabled" style="pointer-events: disabled !important;">Version 6</a><a href="#" id="s-v7" class="btn btn-xs btn-info disabled" style="pointer-events: disabled;">Version 7</a><br><br><h4 style="line-height:0.5;">Tastatur Alarmierung</h4><kbd>Y</kbd> = 1. Einsatz in der Liste öffnen<br><kbd>W</kbd> = Im Verband freigeben <br><kbd>S</kbd> = Alarmieren & weiter<br><kbd>X</kbd> = Alarmieren<br><kbd>A</kbd> = Vorheriger Einsatz<br><kbd>D</kbd> = Nächster Einsatz<br><kbd>E</kbd> = 1. Fahrzeug vom Einsatz rückalarmieren<br><kbd>Q</kbd> = Sprechwunsch bearbeiten<br><kbd>R</kbd> = Zurück zum Einsatz<br><kbd>1 - 5</kbd> = 1. - 5. Krankenhaus anfahren<br><br><h4 style="line-height:0.5;">Geplante Features, bekannte Fehler & sonstiges</h4><ul><li>FEHLER: Karte lädt nicht vollständig</li><li>FEHLER: Krankenhaus übersicht</li><li>FEHLER: Patienten größe in Alarmmaske</li><li>GEPLANT: Fenster verschieben, verkleinern/vergrößern</li><li>GEPLANT: Speicherfunktion der Einstellungen</li><li>GEPLANT: Anzeige der FMS 5 in der neuen Leiste</li><li>GEPLANT: Mehr Layouts</li><li>GEPLANT: Schrift auswahl</li><li>GEPLANT: IconSwitcher</li><li>GEPLANT: Blinken der FMS 5 für Firefox</li><li>GEPLANT: Fehlerbehebungen</li><li>GEPLANT: Design Anpassungen</li><li>Optimiert für 1650 x 1050 & drüber</li><li>Auflösungen unter 1024 x .. können Fehler aufweisen</li></ul><br><p>Es handelt sich immer noch um eine Beta Version, ich bin für keine Schäden verantwortlich. <br><br>Das Script steht in keinem Bezug zum Leitstellenspiel.de - Abänderungen sind erlaubt, das veröffentlichen jedoch nicht.<p><a href="http://forum.leitstellenspiel.de/index.php/Thread/8077-REDESIGNS-by-lost/" style="font-size:12px; font-weight:600;"><p>made with <i class="fa fa-heart" style="color:red; font-size: 14px;"></i> by lost (BETA VERSION)</a><p style="font-size:8px;">Verband Feuerwehr München & Umgebung</p></p></div></div></div></div>');
 $("#radio_outer").css("display", "none");
 $("#buildings_outer").css("display", "none");
 $("#chat_outer").css("display", "none");
@@ -362,77 +366,105 @@ $("#buildings_outer").css("opacity", "0");
 $("#radio_outer").css("opacity", "0");
 $("#settings_outer").css("opacity", "0");
 
-
+$('#map-switch').click(function(){
+    $(this).find('i').toggleClass('fa-toggle-on fa-toggle-off')
+});
 // <li id="enable-map"><a href="#"><i class="fa fa-power-off"></i> Map</a></li><li id="map-fw"><a href="#">Map full</a></li>
 // <a href="#" id="map-switch" class="btn btn-xs btn-info"><i class="fa fa-power-off"></i> Map</a>
 //
 $('#missions_outer').before('<div class="btn-group" id="lost-menu"><a href="#" class="btn btn-sm btn-default" id="missions-aa">Einsätze</a><a href="#" class="btn btn-sm btn-default" id="funkl-aa"">Funksprüche</a><a href="#" class="btn btn-sm btn-default" id="gebl-aa">Wachen</a><a href="#" class="btn btn-sm btn-default" id="chat-aa">Verbands Chat</a><a href="#" class="btn btn-sm btn-default" id="lss_setting" style="font-weight:600;">Einstellungen</a></div>');
 
+
+$('#rot-design').click(function() {
+    $(".navbar-default").css("background-color", "#e74c3c !important");
+    $("#chat_outer .panel-heading, #radio_outer .panel-heading, #buildings_outer .panel-heading, #missions_outer .panel-heading, #settings_outer .panel-heading").css("background-color", "#e74c3c").css("color","#fff");
+    $("div[id^='mission_panel_heading']").css("background-color", "#f5f5f5").css("color","#34495e");
+    $("#rtw-design").css("background-color","");
+    $("#thw-design").css("background-color","");
+    $("#pol-design").css("background-color","");
+    $("#orange-design").css("background-color","");
+    $("#pink-design").css("background-color","");
+    $("#grau-design").css("background-color","");
+    $("#rot-design").css("background-color","#e74c3c");
+});
+
 $('#rtw-design').click(function() {
     $(".navbar-default").css("background-color", "#F7CA18 !important");
-    $(".panel-heading").css("background-color", "#F7CA18 !important");
+    $("#chat_outer .panel-heading, #radio_outer .panel-heading, #buildings_outer .panel-heading, #missions_outer .panel-heading, #settings_outer .panel-heading").css("background-color", "#F7CA18");
+    $("div[id^='mission_panel_heading']").css("background-color", "#f5f5f5");
     $("#rtw-design").css("background-color","#e74c3c");
     $("#thw-design").css("background-color","");
     $("#pol-design").css("background-color","");
     $("#orange-design").css("background-color","");
     $("#pink-design").css("background-color","");
     $("#grau-design").css("background-color","");
+    $("#rot-design").css("background-color","");
 });
 
 $('#pol-design').click(function() {
     $(".navbar-default").css("background-color", "#2ecc71 !important");
-    $(".panel-heading").css("background-color", "#2ecc71 !important");
+    $("#chat_outer .panel-heading, #radio_outer .panel-heading, #buildings_outer .panel-heading, #missions_outer .panel-heading, #settings_outer .panel-heading").css("background-color", "#2ecc71");
+    $("div[id^='mission_panel_heading']").css("background-color", "#f5f5f5");
     $("#rtw-design").css("background-color","");
     $("#pol-design").css("background-color","#e74c3c");
     $("#thw-design").css("background-color","0");
     $("#orange-design").css("background-color","");
     $("#pink-design").css("background-color","");
     $("#grau-design").css("background-color","");
+    $("#rot-design").css("background-color","");
 });
 
 $('#thw-design').click(function() {
     $(".navbar-default").css("background-color", "#3498db !important");
-    $(".panel-heading").css("background-color", "#3498db !important");
+    $("#chat_outer .panel-heading, #radio_outer .panel-heading, #buildings_outer .panel-heading, #missions_outer .panel-heading, #settings_outer .panel-heading").css("background-color", "#3498db");
+    $("div[id^='mission_panel_heading']").css("background-color", "#f5f5f5");
     $("#rtw-design").css("background-color","");
     $("#thw-design").css("background-color","#e74c3c");
     $("#pol-design").css("background-color","");
     $("#orange-design").css("background-color","");
     $("#pink-design").css("background-color","");
     $("#grau-design").css("background-color","");
+    $("#rot-design").css("background-color","");
 });
 
 $('#orange-design').click(function() {
     $(".navbar-default").css("background-color", "#f39c12 !important");
-    $(".panel-heading").css("background-color", "#f39c12 !important");
+    $("#chat_outer .panel-heading, #radio_outer .panel-heading, #buildings_outer .panel-heading, #missions_outer .panel-heading, #settings_outer .panel-heading").css("background-color", "#f39c12");
+    $("div[id^='mission_panel_heading']").css("background-color", "#f5f5f5");
     $("#rtw-design").css("background-color","");
     $("#thw-design").css("background-color","");
     $("#pol-design").css("background-color","");
     $("#orange-design").css("background-color","#e74c3c");
     $("#pink-design").css("background-color","");
     $("#grau-design").css("background-color","");
+    $("#rot-design").css("background-color","");
     
 });
 
 $('#pink-design').click(function() {
     $(".navbar-default").css("background-color", "#D2527F !important");
-    $(".panel-heading").css("background-color", "#D2527F !important");
+    $("#chat_outer .panel-heading, #radio_outer .panel-heading, #buildings_outer .panel-heading, #missions_outer .panel-heading, #settings_outer .panel-heading").css("background-color", "#D2527F");
+    $("div[id^='mission_panel_heading']").css("background-color", "#f5f5f5");
     $("#rtw-design").css("background-color","");
     $("#thw-design").css("background-color","");
     $("#pol-design").css("background-color","");
     $("#orange-design").css("background-color","");
     $("#pink-design").css("background-color","#e74c3c");
     $("#grau-design").css("background-color","");
+    $("#rot-design").css("background-color","");
 });
 
 $('#grau-design').click(function() {
     $(".navbar-default").css("background-color", "#6C7A89 !important");
-    $(".panel-heading").css("background-color", "#6C7A89 !important");
+    $("#chat_outer .panel-heading, #radio_outer .panel-heading, #buildings_outer .panel-heading, #missions_outer .panel-heading, #settings_outer .panel-heading").css("background-color", "#6C7A89");
+    $("div[id^='mission_panel_heading']").css("background-color", "#f5f5f5");
     $("#rtw-design").css("background-color","");
     $("#thw-design").css("background-color","");
     $("#pol-design").css("background-color","");
     $("#orange-design").css("background-color","");
     $("#pink-design").css("background-color","");
     $("#grau-design").css("background-color","#e74c3c");
+    $("#rot-design").css("background-color","");
 });
 
  
@@ -573,6 +605,8 @@ $('#reset').click(function() {
     location.reload();
 });
 
+
+
 var handlers = [
     // on first click:
     function() {
@@ -602,8 +636,7 @@ var handlers = [
         $("#radio_outer").css("right", "0");
         
         $("#settings_outer").css("display", "none");
-        $("#map-switch").css("background-color","#e74c3c"); 
-        
+        $("#map-switch").css("background-color","#e74c3c");     
     },
 
     // on second click:
@@ -620,6 +653,17 @@ $("#map-switch").click(function() {
     handlers[counter++].apply(this, Array.prototype.slice.apply(arguments));
     counter %= handlers.length;
 });
+
+//$(document).ready(function () {
+//        $('.icon-unlock').click(function () {
+//            $(this).addClass('icon-lock');
+//            $(this).removeClass('icon-unlock'); 
+//        }, function () {
+//            $(this).addClass('icon-unlock');
+//            $(this).removeClass('icon-lock');
+//        });
+// 	});
+
 
 
 
