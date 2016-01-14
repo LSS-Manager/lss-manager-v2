@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         LSS Layout Manger 2
+// @name         LSS Layout Manger
 // @namespace    http://www.lss-manager.de
 // @version      1.1
 // @description  Mit der Tastatur Alarmieren oder sonstiges
@@ -346,7 +346,7 @@ $(document).keydown(function(e) {
 
 // Design Funktionen ------------------------------------------------------------------------------------------------------------------------------------------------
 
-$("#news_li").before('<div class="col-sm-4 overview_outer" id="settings_outer"><div id=„settingsl“ class="sidebar-nav"><div class="panel panel-default"><div class="panel-heading">Einstellungen</div><div class="panel-body"><h3 style="line-height:0.5;">Design Farben</h3><a href="#" id="rtw-design" class="btn btn-xs btn-info">RD Design</a><a href="#" id="pol-design" class="btn btn-xs btn-info">POL Design</a><a href="#" id="thw-design" class="btn btn-xs btn-info">THW Design</a><a href="#" id="reset" class="btn btn-xs btn-info">Zurücksetzen</a><br><br><h3 style="line-height:0.5;">Layout Einstellungen</h3><a href="#" id="map-switch" class="btn btn-xs btn-info"><i class="fa fa-power-off"></i> Map</a><a href="#" id="s-v4" class="btn btn-xs btn-info">Version 4</a><a href="#" id="s-v5" class="btn btn-xs btn-info">Version 5</a><a href="#" id="s-v6" class="btn btn-xs btn-info">Version 6</a><a href="#" id="s-v7" class="btn btn-xs btn-info">Version 7</a><br><br><h3 style="line-height:0.5;">Tastatur Alarmierung</h3><kbd>W</kbd> = Im Verband freigeben <br><kbd>S</kbd> = Alarmieren & weiter<br><kbd>A</kbd> = Vorheriger Einsatz<br><kbd>D</kbd> = Nächster Einsatz<br><kbd>E</kbd> = 1. Fahrzeug vom Einsatz rückalarmieren<br><kbd>Q</kbd> = Sprechwunsch bearbeiten<br><kbd>R</kbd> = Zurück zum Einsatz<br><kbd>1 - 5</kbd> = 1. - 5. Krankenhaus anfahren<br><br><br><br><br><br><br><br><br>Made by lost</div></div></div></div>');
+$("#news_li").before('<div class="col-sm-4 overview_outer" id="settings_outer"><div id=„settingsl“ class="sidebar-nav"><div class="panel panel-default"><div class="panel-heading">Einstellungen</div><div class="panel-body"><h3 style="line-height:0.5;">Design Farben</h3><a href="#" id="rtw-design" class="btn btn-xs btn-info">RD Design</a><a href="#" id="pol-design" class="btn btn-xs btn-info">POL Design</a><a href="#" id="thw-design" class="btn btn-xs btn-info">THW Design</a><a href="#" id="reset" class="btn btn-xs btn-info">Zurücksetzen</a><br><br><h3 style="line-height:0.5;">Layout Einstellungen</h3><a href="#" id="map-switch" class="btn btn-xs btn-info"><i class="fa fa-power-off"></i> Map</a><a href="#" id="s-v4" class="btn btn-xs btn-info disabled" style="pointer-events: disabled;">Version 4</a><a href="#" id="s-v5" class="btn btn-xs btn-info disabled" style="pointer-events: disabled;">Version 5</a><a href="#" id="s-v6" class="btn btn-xs btn-info disabled" style="pointer-events: disabled !important;">Version 6</a><a href="#" id="s-v7" class="btn btn-xs btn-info disabled" style="pointer-events: disabled;">Version 7</a><br><br><h3 style="line-height:0.5;">Tastatur Alarmierung</h3><kbd>W</kbd> = Im Verband freigeben <br><kbd>S</kbd> = Alarmieren & weiter<br><kbd>A</kbd> = Vorheriger Einsatz<br><kbd>D</kbd> = Nächster Einsatz<br><kbd>E</kbd> = 1. Fahrzeug vom Einsatz rückalarmieren<br><kbd>Q</kbd> = Sprechwunsch bearbeiten<br><kbd>R</kbd> = Zurück zum Einsatz<br><kbd>1 - 5</kbd> = 1. - 5. Krankenhaus anfahren<br><br><br><br><br><br><br><br><br>Made by lost</div></div></div></div>');
 $("#radio_outer").css("display", "none");
 $("#buildings_outer").css("display", "none");
 $("#chat_outer").css("display", "none");
@@ -509,4 +509,3 @@ $("#map-switch").click(function() {
 });
 
 // Design Funktionen Ende ------------------------------------------------------------------------------------------------------------------------------------------------
-
