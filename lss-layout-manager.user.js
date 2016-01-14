@@ -404,7 +404,7 @@ $('#rtw-design').click(function() {
 
 $('#pol-design').click(function() {
     $(".navbar-default").css("background-color", "#2ecc71 !important");
-    $("#chat_outer .panel-heading, #radio_outer .panel-heading, #buildings_outer .panel-heading, #missions_outer .panel-heading, #settings_outer .panel-heading").css("background-color", "#F7CA18");
+    $("#chat_outer .panel-heading, #radio_outer .panel-heading, #buildings_outer .panel-heading, #missions_outer .panel-heading, #settings_outer .panel-heading").css("background-color", "#2ecc71");
     $("div[id^='mission_panel_heading']").css("background-color", "");
     $("#rtw-design").css("background-color","");
     $("#pol-design").css("background-color","#e74c3c");
@@ -417,7 +417,7 @@ $('#pol-design').click(function() {
 
 $('#thw-design').click(function() {
     $(".navbar-default").css("background-color", "#3498db !important");
-    $("#chat_outer .panel-heading, #radio_outer .panel-heading, #buildings_outer .panel-heading, #missions_outer .panel-heading, #settings_outer .panel-heading").css("background-color", "#F7CA18");
+    $("#chat_outer .panel-heading, #radio_outer .panel-heading, #buildings_outer .panel-heading, #missions_outer .panel-heading, #settings_outer .panel-heading").css("background-color", "#3498db");
     $("div[id^='mission_panel_heading']").css("background-color", "");
     $("#rtw-design").css("background-color","");
     $("#thw-design").css("background-color","#e74c3c");
@@ -430,7 +430,7 @@ $('#thw-design').click(function() {
 
 $('#orange-design').click(function() {
     $(".navbar-default").css("background-color", "#f39c12 !important");
-    $("#chat_outer .panel-heading, #radio_outer .panel-heading, #buildings_outer .panel-heading, #missions_outer .panel-heading, #settings_outer .panel-heading").css("background-color", "#F7CA18");
+    $("#chat_outer .panel-heading, #radio_outer .panel-heading, #buildings_outer .panel-heading, #missions_outer .panel-heading, #settings_outer .panel-heading").css("background-color", "#f39c12");
     $("div[id^='mission_panel_heading']").css("background-color", "");
     $("#rtw-design").css("background-color","");
     $("#thw-design").css("background-color","");
@@ -444,7 +444,7 @@ $('#orange-design').click(function() {
 
 $('#pink-design').click(function() {
     $(".navbar-default").css("background-color", "#D2527F !important");
-    $("#chat_outer .panel-heading, #radio_outer .panel-heading, #buildings_outer .panel-heading, #missions_outer .panel-heading, #settings_outer .panel-heading").css("background-color", "#F7CA18");
+    $("#chat_outer .panel-heading, #radio_outer .panel-heading, #buildings_outer .panel-heading, #missions_outer .panel-heading, #settings_outer .panel-heading").css("background-color", "#D2527F");
     $("div[id^='mission_panel_heading']").css("background-color", "");
     $("#rtw-design").css("background-color","");
     $("#thw-design").css("background-color","");
@@ -457,7 +457,7 @@ $('#pink-design').click(function() {
 
 $('#grau-design').click(function() {
     $(".navbar-default").css("background-color", "#6C7A89 !important");
-    $("#chat_outer .panel-heading, #radio_outer .panel-heading, #buildings_outer .panel-heading, #missions_outer .panel-heading, #settings_outer .panel-heading").css("background-color", "#F7CA18");
+    $("#chat_outer .panel-heading, #radio_outer .panel-heading, #buildings_outer .panel-heading, #missions_outer .panel-heading, #settings_outer .panel-heading").css("background-color", "#6C7A89");
     $("div[id^='mission_panel_heading']").css("background-color", "");
     $("#rtw-design").css("background-color","");
     $("#thw-design").css("background-color","");
