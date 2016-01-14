@@ -175,7 +175,6 @@ $(".logo").after("</a><a href='http://forum.leitstellenspiel.de/index.php/Thread
     "	width: 35%;",
     "	right: 0;",
     "	position: absolute;",
-    "   z-index:999",
 	"}",
 	"",
 	"#chat_outer .panel-heading, #radio_outer .panel-heading, #buildings_outer .panel-heading {",
