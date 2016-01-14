@@ -177,7 +177,7 @@ $(".logo").after("</a><a href='http://forum.leitstellenspiel.de/index.php/Thread
     "	position: absolute;",
 	"}",
 	"",
-	"#chat_outer .panel-heading, #radio_outer .panel-heading, #buildings_outer .panel-heading, #settings_outer .panel-heading, #missions_outer .panel-heading {",
+	"#chat_outer .panel-heading, #radio_outer .panel-heading, #buildings_outer .panel-heading, #settings_outer .panel-heading {",
 	"	background-color: #e74c3c;",
 	"	color: #fff;",
 	"}",
@@ -283,7 +283,8 @@ $("a:contains('Zurück zum Einsatz')").attr('id', 'zurück-einsatz');
 $("a:contains('Anfahren')").attr('id', 'nächstes-krankenhaus');
 $("a:contains('Rückalarmieren')").attr('id', 'lf-zurück');
 $("small:contains('Fahrzeuge ausgeblendet.')").css('display', 'none');
-$("div[id^='mission_panel_heading']").css("background-color", "#f5f5f5").css("color","#34495e");
+$(".panel-heading:contains('Einsätze')").css('background-color', '#e74c3c').css("color","#fff");
+//$("div[id^='mission_panel_heading']").css("background-color", "").css("color","#34495e");
 
 $(document).keydown(function(e) {
 
@@ -378,7 +379,7 @@ $('#missions_outer').before('<div class="btn-group" id="lost-menu"><a href="#" c
 $('#rot-design').click(function() {
     $(".navbar-default").css("background-color", "#e74c3c !important");
     $("#chat_outer .panel-heading, #radio_outer .panel-heading, #buildings_outer .panel-heading, #missions_outer .panel-heading, #settings_outer .panel-heading").css("background-color", "#e74c3c").css("color","#fff");
-    $("div[id^='mission_panel_heading']").css("background-color", "#f5f5f5").css("color","#34495e");
+    $("div[id^='mission_panel_heading']").css("background-color", "").css("color","#34495e");
     $("#rtw-design").css("background-color","");
     $("#thw-design").css("background-color","");
     $("#pol-design").css("background-color","");
@@ -391,7 +392,7 @@ $('#rot-design').click(function() {
 $('#rtw-design').click(function() {
     $(".navbar-default").css("background-color", "#F7CA18 !important");
     $("#chat_outer .panel-heading, #radio_outer .panel-heading, #buildings_outer .panel-heading, #missions_outer .panel-heading, #settings_outer .panel-heading").css("background-color", "#F7CA18");
-    $("div[id^='mission_panel_heading']").css("background-color", "#f5f5f5");
+    $("div[id^='mission_panel_heading']").css("background-color", "");
     $("#rtw-design").css("background-color","#e74c3c");
     $("#thw-design").css("background-color","");
     $("#pol-design").css("background-color","");
@@ -403,8 +404,8 @@ $('#rtw-design').click(function() {
 
 $('#pol-design').click(function() {
     $(".navbar-default").css("background-color", "#2ecc71 !important");
-    $("#chat_outer .panel-heading, #radio_outer .panel-heading, #buildings_outer .panel-heading, #missions_outer .panel-heading, #settings_outer .panel-heading").css("background-color", "#2ecc71");
-    $("div[id^='mission_panel_heading']").css("background-color", "#f5f5f5");
+    $("#chat_outer .panel-heading, #radio_outer .panel-heading, #buildings_outer .panel-heading, #missions_outer .panel-heading, #settings_outer .panel-heading").css("background-color", "#F7CA18");
+    $("div[id^='mission_panel_heading']").css("background-color", "");
     $("#rtw-design").css("background-color","");
     $("#pol-design").css("background-color","#e74c3c");
     $("#thw-design").css("background-color","0");
@@ -416,8 +417,8 @@ $('#pol-design').click(function() {
 
 $('#thw-design').click(function() {
     $(".navbar-default").css("background-color", "#3498db !important");
-    $("#chat_outer .panel-heading, #radio_outer .panel-heading, #buildings_outer .panel-heading, #missions_outer .panel-heading, #settings_outer .panel-heading").css("background-color", "#3498db");
-    $("div[id^='mission_panel_heading']").css("background-color", "#f5f5f5");
+    $("#chat_outer .panel-heading, #radio_outer .panel-heading, #buildings_outer .panel-heading, #missions_outer .panel-heading, #settings_outer .panel-heading").css("background-color", "#F7CA18");
+    $("div[id^='mission_panel_heading']").css("background-color", "");
     $("#rtw-design").css("background-color","");
     $("#thw-design").css("background-color","#e74c3c");
     $("#pol-design").css("background-color","");
@@ -429,8 +430,8 @@ $('#thw-design').click(function() {
 
 $('#orange-design').click(function() {
     $(".navbar-default").css("background-color", "#f39c12 !important");
-    $("#chat_outer .panel-heading, #radio_outer .panel-heading, #buildings_outer .panel-heading, #missions_outer .panel-heading, #settings_outer .panel-heading").css("background-color", "#f39c12");
-    $("div[id^='mission_panel_heading']").css("background-color", "#f5f5f5");
+    $("#chat_outer .panel-heading, #radio_outer .panel-heading, #buildings_outer .panel-heading, #missions_outer .panel-heading, #settings_outer .panel-heading").css("background-color", "#F7CA18");
+    $("div[id^='mission_panel_heading']").css("background-color", "");
     $("#rtw-design").css("background-color","");
     $("#thw-design").css("background-color","");
     $("#pol-design").css("background-color","");
@@ -443,8 +444,8 @@ $('#orange-design').click(function() {
 
 $('#pink-design').click(function() {
     $(".navbar-default").css("background-color", "#D2527F !important");
-    $("#chat_outer .panel-heading, #radio_outer .panel-heading, #buildings_outer .panel-heading, #missions_outer .panel-heading, #settings_outer .panel-heading").css("background-color", "#D2527F");
-    $("div[id^='mission_panel_heading']").css("background-color", "#f5f5f5");
+    $("#chat_outer .panel-heading, #radio_outer .panel-heading, #buildings_outer .panel-heading, #missions_outer .panel-heading, #settings_outer .panel-heading").css("background-color", "#F7CA18");
+    $("div[id^='mission_panel_heading']").css("background-color", "");
     $("#rtw-design").css("background-color","");
     $("#thw-design").css("background-color","");
     $("#pol-design").css("background-color","");
@@ -456,8 +457,8 @@ $('#pink-design').click(function() {
 
 $('#grau-design').click(function() {
     $(".navbar-default").css("background-color", "#6C7A89 !important");
-    $("#chat_outer .panel-heading, #radio_outer .panel-heading, #buildings_outer .panel-heading, #missions_outer .panel-heading, #settings_outer .panel-heading").css("background-color", "#6C7A89");
-    $("div[id^='mission_panel_heading']").css("background-color", "#f5f5f5");
+    $("#chat_outer .panel-heading, #radio_outer .panel-heading, #buildings_outer .panel-heading, #missions_outer .panel-heading, #settings_outer .panel-heading").css("background-color", "#F7CA18");
+    $("div[id^='mission_panel_heading']").css("background-color", "");
     $("#rtw-design").css("background-color","");
     $("#thw-design").css("background-color","");
     $("#pol-design").css("background-color","");
