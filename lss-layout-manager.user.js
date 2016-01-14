@@ -14,6 +14,7 @@
 
 $('head').append('<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">');
 $('head').append('<link href="https://fonts.googleapis.com/css?family=Titillium+Web" rel="stylesheet" type="text/css">');
+$(".logo").after("</a><a href='http://forum.leitstellenspiel.de/index.php/Thread/8077-REDESIGNS-by-lost/' style='font-size:12px; font-weight:600; top:20px; left:14%; color:#fff; position:absolute;'><p>made with <i class='fa fa-heart' style='color:orange; font-size: 14px;'></i> by lost</p>");
 
 
 // Custom CSS --------------------------------------------------------------------------------------------------------------------------------
@@ -147,7 +148,7 @@ $('head').append('<link href="https://fonts.googleapis.com/css?family=Titillium+
 	"}",
 	"",
 	"#map {",
-	"	height: 900px !important;",
+	"	height: 900px;",
 	"}",
 	"",
 	".well {",
@@ -163,7 +164,13 @@ $('head').append('<link href="https://fonts.googleapis.com/css?family=Titillium+
 	"	margin-right:4px; ",
 	"}",
 	"",
-	"#chat_outer, #radio_outer, #buildings_outer, #settings_outer {",
+	"#chat_outer, #radio_outer, #buildings_outer {",
+	"	top: 100px;",
+    "	width: 35%;",
+    "	margin-left: 66%;",
+    "	position: absolute;",
+	"}",
+    "#settings_outer {",
 	"	top: 100px;",
     "	width: 35%;",
     "	right: 0;",
@@ -279,6 +286,7 @@ $("a:contains('Zurück zum Einsatz')").attr('id', 'zurück-einsatz');
 $("a:contains('Anfahren')").attr('id', 'nächstes-krankenhaus');
 $("a:contains('Rückalarmieren')").attr('id', 'lf-zurück');
 $("a:contains('Direkt fertigstellen')").css('display', 'none');
+$("a:contains('lightbox-open')").attr('id', 'spwoe');
 $("small:contains('Fahrzeuge ausgeblendet.')").css('display', 'none');
 
 
@@ -304,6 +312,8 @@ $(document).keydown(function(e) {
     } else if (e.keyCode == 81) {
         // Q Sprechwunsch
         $("#sprechwunsch-bearbeiten")[0].click();
+        $("#spwoe")[0].click();
+        
 
     } else if (e.keyCode == 49) {
         // 1 1. krankenhaus
@@ -410,11 +420,25 @@ $('#lss_setting').click(function() {
 });
 
 $('#s-v4').click(function() {
-    $("#map").css("height", "500px");
-    $("#buildings_outer").css("margin-top", "-560px");
-    $("#buildings_outer").css("margin-left", "33.5%");
-    $("#chat_outer").css("margin-top", "-560px");
-    $("#missions_outer").css("margin-top", "10px");
+    $("#buildings_outer").css("width:", "22% !important");
+    $("#chat_outer").css("width:", "22% !important");
+    $("#radio_outer").css("width:", "22% !important");
+    $("#map").css("height", "500px !important");
+    
+    $("#buildings_outer").css("margin-top", "-400px");
+    $("#missions_outer").css("margin-top", "-400px");
+    $("#chat_outer").css("margin-top", "-400px");
+    $("#radio_outer").css("margin-top", "-400px");
+    
+    $("#missions_outer").css("top", "0px");
+    $("#buildings_outer").css("top", "0px");
+    $("#chat_outer").css("top", "0px");
+    $("#radio_outer").css("top", "0px");
+    
+    $("#chat_outer").css("margin-left", "0");
+    $("#radio_outer").css("margin-left", "0");
+    $("#buildings_outer").css("margin-left", "0");    
+
 
     $("#missions_outer").css("position", "relative");
     $("#radio_outer").css("position", "relative");
@@ -425,11 +449,6 @@ $('#s-v4').click(function() {
     $("#radio_outer").css("display", "");
     $("#buildings_outer").css("display", "");
     $("#chat_outer").css("display", "");
-
-    $("#missions_outer").css("right", "500");
-    $("#buildings_outer").css("right", "500");
-    $("#chat_outer").css("right", "500");
-
     
     $("#settings_outer").css("display", "none");
 });
@@ -463,18 +482,19 @@ var handlers = [
         $("#missions_outer").css("width", "25%");
         $("#missions_outer").css("display", "");
         
-        $("#buildings_outer").css("left", "25%");
+        $("#buildings_outer").css("margin-left", "26%");
         $("#buildings_outer").css("right", "500");
         $("#buildings_outer").css("width", "25%");
         $("#buildings_outer").css("display", "");
         
-        $("#chat_outer").css("left", "50%");
+        $("#chat_outer").css("margin-left", "51%");
         $("#chat_outer").css("right", "500");
         $("#chat_outer").css("width", "25%");
         $("#chat_outer").css("display", "");
         
         $("#radio_outer").css("width", "25%");
         $("#radio_outer").css("display", "");
+        $("#radio_outer").css("right", "0");
         
         $("#settings_outer").css("display", "none");
         
