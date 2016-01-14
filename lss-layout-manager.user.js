@@ -6,6 +6,8 @@
 // @author       André Weller
 // @include      http://www.leitstellenspiel.de/
 // @include      http://www.leitstellenspiel.de/*
+// @include      http://www.missionchief.com/*
+// @include      http://www.missionchief.com
 // @version      1
 // @grant        none
 // ==/UserScript==
@@ -461,12 +463,12 @@ var handlers = [
         $("#missions_outer").css("width", "25%");
         $("#missions_outer").css("display", "");
         
-        $("#buildings_outer").css("left", "420px");
+        $("#buildings_outer").css("left", "25%");
         $("#buildings_outer").css("right", "500");
         $("#buildings_outer").css("width", "25%");
         $("#buildings_outer").css("display", "");
         
-        $("#chat_outer").css("left", "840px");
+        $("#chat_outer").css("left", "50%");
         $("#chat_outer").css("right", "500");
         $("#chat_outer").css("width", "25%");
         $("#chat_outer").css("display", "");
@@ -507,8 +509,4 @@ $("#map-switch").click(function() {
 });
 
 // Design Funktionen Ende ------------------------------------------------------------------------------------------------------------------------------------------------
-
-
-
-
 
