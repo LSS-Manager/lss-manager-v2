@@ -1,16 +1,18 @@
 // ==UserScript==
 // @name         LSS Layout Manger
 // @namespace    http://www.lss-manager.de
-// @version      1.1
+// @version      1.7
 // @description  Mit der Tastatur Alarmieren oder sonstiges
-// @author       André Weller
+// @author       lost & northdegree
 // @include      http://www.leitstellenspiel.de/
 // @include      http://www.leitstellenspiel.de/*
 // @include      http://www.missionchief.com/*
 // @include      http://www.missionchief.com
 // @version      1
 // @grant        none
+// @run-at 	 document-idle
 // ==/UserScript==
+
 var curwindow = "#missions_outer";
 var nomap = false;
 $('head')
@@ -641,16 +643,6 @@ var counter = 0;
 $("#myonoffswitch").click(function() {
     handlers[counter++].apply(this, Array.prototype.slice.apply(arguments));
     counter %= handlers.length;
-});
-
- $(document).ready(
-            function() {
-                setInterval(function() {
-                    var randomnumber = Math.floor(Math.random() * 100);
-                    $('#show').text(
-                            'I am getting refreshed every 3 seconds..! Random Number ==> '
-                                    + randomnumber);
-                }, 3000);
 });
 
 // Design Funktionen Ende ------------------------------------------------------------------------------------------------------------------------------------------------
