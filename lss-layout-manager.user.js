@@ -535,6 +535,7 @@ $('#chat-aa').click(function() {
 	$('#chat_outer').fadeIn(500);
 	$('#chat_outer').slideDown(1000);
 	curwindow = '#chat_outer';
+	activem = false;
 });
 
 $('#wachen-aa').click(function() {    
@@ -544,6 +545,7 @@ $('#wachen-aa').click(function() {
 	$('#buildings_outer').fadeIn(500);
 	$('#buildings_outer').slideDown(1000);
 	curwindow = '#buildings_outer';
+	activem = false;
 });
 
 $('#funkl-aa').click(function() {
@@ -553,6 +555,7 @@ $('#funkl-aa').click(function() {
 	$('#radio_outer').fadeIn(500);
 	$('#radio_outer').slideDown(1000);
 	curwindow = '#radio_outer';
+	activem = false;
 });
 
 $('#lss_setting').click(function() {
@@ -562,6 +565,8 @@ $('#lss_setting').click(function() {
 	$('#settings_outer').fadeIn(500);
 	$('#settings_outer').slideDown(1000);
 	curwindow = '#settings_outer';
+	activem = false;
+	
 	if(nomap == true){
 		$('#missions_outer,#chat_outer,#buildings_outer,#radio_outer')
 			.css("opacity","0.3")
