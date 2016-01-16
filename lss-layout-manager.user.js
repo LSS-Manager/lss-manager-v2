@@ -1,16 +1,24 @@
 // ==UserScript==
 // @name         LSS Layout Manger
 // @namespace    http://www.lss-manager.de
+<<<<<<< HEAD
 // @version      1.8
+=======
+// @version      1.7
+>>>>>>> origin/master
 // @description  Mit der Tastatur Alarmieren oder sonstiges
-// @author       André Weller
+// @author       lost & northdegree
 // @include      http://www.leitstellenspiel.de/
 // @include      http://www.leitstellenspiel.de/*
 // @include      http://www.missionchief.com/*
 // @include      http://www.missionchief.com
 // @version      1
 // @grant        none
+<<<<<<< HEAD
 // @run-at document-idle
+=======
+// @run-at 	 document-idle
+>>>>>>> origin/master
 // ==/UserScript==
 
 var curwindow = "#missions_outer";
@@ -672,4 +680,8 @@ $("#myonoffswitch").click(function() {
     counter %= handlers.length;
 });
 
+<<<<<<< HEAD
 // Design Funktionen Ende ------------------------------------------------------------------------------------------------------------------------------------------------
+=======
+// Design Funktionen Ende ------------------------------------------------------------------------------------------------------------------------------------------------
+>>>>>>> origin/master
