@@ -1,11 +1,7 @@
 // ==UserScript==
 // @name         LSS Layout Manger
 // @namespace    http://www.lss-manager.de
-<<<<<<< HEAD
 // @version      1.8
-=======
-// @version      1.7
->>>>>>> origin/master
 // @description  Mit der Tastatur Alarmieren oder sonstiges
 // @author       lost & northdegree
 // @include      http://www.leitstellenspiel.de/
@@ -14,11 +10,7 @@
 // @include      http://www.missionchief.com
 // @version      1
 // @grant        none
-<<<<<<< HEAD
 // @run-at document-idle
-=======
-// @run-at 	 document-idle
->>>>>>> origin/master
 // ==/UserScript==
 
 var curwindow = "#missions_outer";
@@ -525,9 +517,7 @@ $('#missions-aa').click(function() {
 	$('#missions_outer').slideDown(1000);
 	curwindow = '#missions_outer';
     activem = true;
-});
 
-(function(){
     if(activem == true){
         for (var i = 0; i < 200; i++ ) {
             $("#missions-fire")
@@ -547,7 +537,7 @@ $('#chat-aa').click(function() {
 	curwindow = '#chat_outer';
 });
 
-$('#wachen-aa').click(function() {
+$('#wachen-aa').click(function() {    
 	$('#settings-spin').removeClass('fa-spin');
 	$(curwindow).fadeOut(500);
     $(curwindow).slideUp(1000);
@@ -680,8 +670,4 @@ $("#myonoffswitch").click(function() {
     counter %= handlers.length;
 });
 
-<<<<<<< HEAD
 // Design Funktionen Ende ------------------------------------------------------------------------------------------------------------------------------------------------
-=======
-// Design Funktionen Ende ------------------------------------------------------------------------------------------------------------------------------------------------
->>>>>>> origin/master
