@@ -1,18 +1,27 @@
 // ==UserScript==
 // @name         LSS Layout Manger
 // @namespace    http://www.lss-manager.de
-// @version      1.1
+// @version      1.8
 // @description  Mit der Tastatur Alarmieren oder sonstiges
-// @author       André Weller
+// @author       lost & northdegree
 // @include      http://www.leitstellenspiel.de/
 // @include      http://www.leitstellenspiel.de/*
 // @include      http://www.missionchief.com/*
 // @include      http://www.missionchief.com
 // @version      1
 // @grant        none
+// @run-at document-idle
 // ==/UserScript==
+
 var curwindow = "#missions_outer";
 var nomap = false;
+var activem = false;
+
+
+//$('<audio id="alert-audio"><source src="https://a.clyp.it/xdjilqg4.mp3" type="audio/mpeg"></audio>').appendTo('body');
+
+$('.container-fluid').before('<audio id="alert-audio"><source src="https://a.clyp.it/xdjilqg4.mp3" type="audio/mpeg"></audio>');
+
 $('head')
     .append('<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">')
     .append('<link href="https://fonts.googleapis.com/css?family=Titillium+Web" rel="stylesheet" type="text/css">');
@@ -317,66 +326,70 @@ $(".panel-heading:contains('Einsätze')").css('background-color', '#e74c3c').css
 //$("div[id^='mission_panel_heading']").css("background-color", "").css("color","#34495e");
 
 $(document).keydown(function(e) {
+    if (!($("input").is(":focus"))) {
+        //alert('not focused');
 
-    if (e.keyCode == 68) {
-        // D nächster einsatz
-        $("#nächster-einsatz")[0].click();
+        if (e.keyCode == 68) {
+            // D nächster einsatz
+            $("#nächster-einsatz")[0].click();
 
-    } else if (e.keyCode == 87) {
-        // W verband freigeben
-        $("#freigabe-verband")[0].click();
+        } else if (e.keyCode == 87) {
+            // W verband freigeben
+            $("#freigabe-verband")[0].click();
 
-    } else if (e.keyCode == 65) {
-        // A vorheriger einsatz
-        $("#vorheriger-einsatz")[0].click();
+        } else if (e.keyCode == 65) {
+            // A vorheriger einsatz
+            $("#vorheriger-einsatz")[0].click();
 
-    } else if (e.keyCode == 83) {
-        // S alarmieren und weiter
-        $("#alert_next").click();
+        } else if (e.keyCode == 83) {
+            // S alarmieren und weiter
+            $('#alert-audio')[0].play();
+            $("#alert_next").click();
 
-    } else if (e.keyCode == 81) {
-        // Q Sprechwunsch
-        $("#sprechwunsch-bearbeiten")[0].click();
-     
-    } else if (e.keyCode == 49) {
-        // 1 1. krankenhaus
-        $("#nächstes-krankenhaus")[0].click();
 
-    } else if (e.keyCode == 50) {
-        // 2 2. krankenhaus
-        $("#nächstes-krankenhaus")[1].click();
+        } else if (e.keyCode == 81) {
+            // Q Sprechwunsch
+            $("#sprechwunsch-bearbeiten")[0].click();
 
-    } else if (e.keyCode == 51) {
-        // 3 3. krankenhaus
-        $("#nächstes-krankenhaus")[2].click();
+        } else if (e.keyCode == 49) {
+            // 1 1. krankenhaus
+            $("#nächstes-krankenhaus")[0].click();
 
-    } else if (e.keyCode == 52) {
-        // 4 4. krankenhaus
-        $("#nächstes-krankenhaus")[3].click();
+        } else if (e.keyCode == 50) {
+            // 2 2. krankenhaus
+            $("#nächstes-krankenhaus")[1].click();
 
-    } else if (e.keyCode == 53) {
-        // 5 5. krankenhaus
-        $("#nächstes-krankenhaus")[4].click();
+        } else if (e.keyCode == 51) {
+            // 3 3. krankenhaus
+            $("#nächstes-krankenhaus")[2].click();
 
-    } else if (e.keyCode == 82) {
-        // R zurück zum Einsatz
-        $("#zurück-einsatz")[0].click();
+        } else if (e.keyCode == 52) {
+            // 4 4. krankenhaus
+            $("#nächstes-krankenhaus")[3].click();
 
-    } else if (e.keyCode == 69) {
-        // E 1.fz zurück
-        $("#lf-zurück")[0].click();
-        
-    } else if (e.keyCode == 88) {
-        // X Alarmieren
-        $("#mission_alarm_btn")[0].click();
-        
-    } else if (e.keyCode == 89) {
-        // Y Erster Einsatz auf
-        $("a[href^='/missions']")[0].click();
+        } else if (e.keyCode == 53) {
+            // 5 5. krankenhaus
+            $("#nächstes-krankenhaus")[4].click();
+
+        } else if (e.keyCode == 82) {
+            // R zurück zum Einsatz
+            $("#zurück-einsatz")[0].click();
+
+        } else if (e.keyCode == 69) {
+            // E 1.fz zurück
+            $("#lf-zurück")[0].click();
+
+        } else if (e.keyCode == 88) {
+            // X Alarmieren
+            $("#mission_alarm_btn")[0].click();
+
+        } else if (e.keyCode == 89) {
+            // Y Erster Einsatz auf
+            $("a[href^='/missions']")[0].click();
+        }
+
+        return e.returnValue;
     }
-    
-    return e.returnValue;
-
 });
 // Tastatur Alarmierung Ende ----------------------------------------------------------------------------------------------------------------
 //wichtiges : $("a[href^='/missions']")[0].click(); $("#lf-zurück")[0].click();
@@ -401,7 +414,7 @@ $('#map-switch').click(function(){
 // <li id="enable-map"><a href="#"><i class="fa fa-power-off"></i> Map</a></li><li id="map-fw"><a href="#">Map full</a></li>
 // <a href="#" id="map-switch" class="btn btn-xs btn-info"><i class="fa fa-power-off"></i> Map</a>
 //
-$('#missions_outer').before('<div class="btn-group" id="lost-menu"><a href="#" class="btn btn-sm btn-default" id="missions-aa">Einsätze</a><a href="#" class="btn btn-sm btn-default" id="funkl-aa"">Funksprüche</a><a href="#" class="btn btn-sm btn-default" id="wachen-aa">Wachen</a><a href="#" class="btn btn-sm btn-default" id="chat-aa">Verbands Chat</a><a href="#" class="btn btn-sm btn-default" id="lss_setting" style="font-weight:600;">Einstellungen</a></div>');
+$('#missions_outer').before('<div class="btn-group" id="lost-menu"><a href="#" class="btn btn-sm btn-default" id="missions-aa"><i id="missions-fire" class="fa fa-fire"></i> Einsätze</a><a href="#" class="btn btn-sm btn-default" id="funkl-aa""><i id="radio-spin" class="fa fa-feed"></i> Funksprüche</a><a href="#" class="btn btn-sm btn-default" id="wachen-aa"><i id="buildings-spin" class="fa fa-building-o"></i> Wachen</a><a href="#" class="btn btn-sm btn-default" id="chat-aa"><i id="chat-spin" class="fa fa-comment-o"></i> Verbands Chat</a><a href="#" class="btn btn-sm btn-default" id="lss_setting" style="font-weight:600;"><i id="settings-spin" class="fa fa-cog"></i> Einstellungen</a></div>');
 
 
 $('#rot-design').click(function() {
@@ -495,46 +508,65 @@ $('#grau-design').click(function() {
     $("#grau-design").css("background-color","#e74c3c");
     $("#rot-design").css("background-color","");
 });
-
  
 $('#missions-aa').click(function() {
+	$('#settings-spin').removeClass('fa-spin');
 	$(curwindow).fadeOut(500);
     $(curwindow).slideUp(1000);
 	$('#missions_outer').fadeIn(500);
 	$('#missions_outer').slideDown(1000);
 	curwindow = '#missions_outer';
+    activem = true;
+
+    if(activem == true){
+        for (var i = 0; i < 200; i++ ) {
+            $("#missions-fire")
+                .animate( { color: "#f39c12" }, 800 )
+                .animate( { color: "#ea6153" }, 800 )
+                .animate( { color: "#f1c40f" }, 800 );
+        }
+    }
 });
 
 $('#chat-aa').click(function() {
+	$('#settings-spin').removeClass('fa-spin');
 	$(curwindow).fadeOut(500);
     $(curwindow).slideUp(1000);
 	$('#chat_outer').fadeIn(500);
 	$('#chat_outer').slideDown(1000);
 	curwindow = '#chat_outer';
+	activem = false;
 });
 
 $('#wachen-aa').click(function() {    
+	$('#settings-spin').removeClass('fa-spin');
 	$(curwindow).fadeOut(500);
     $(curwindow).slideUp(1000);
 	$('#buildings_outer').fadeIn(500);
 	$('#buildings_outer').slideDown(1000);
 	curwindow = '#buildings_outer';
+	activem = false;
 });
 
 $('#funkl-aa').click(function() {
+	$('#settings-spin').removeClass('fa-spin');
 	$(curwindow).fadeOut(500);
     $(curwindow).slideUp(1000);
 	$('#radio_outer').fadeIn(500);
 	$('#radio_outer').slideDown(1000);
 	curwindow = '#radio_outer';
+	activem = false;
 });
 
 $('#lss_setting').click(function() {
+    $('#settings-spin').addClass('fa-spin');
 	$(curwindow).fadeOut(500);
     $(curwindow).slideUp(1000);
 	$('#settings_outer').fadeIn(500);
 	$('#settings_outer').slideDown(1000);
 	curwindow = '#settings_outer';
+	activem = false;
+	
 	if(nomap == true){
 		$('#missions_outer,#chat_outer,#buildings_outer,#radio_outer')
 			.css("opacity","0.3")
@@ -641,16 +673,6 @@ var counter = 0;
 $("#myonoffswitch").click(function() {
     handlers[counter++].apply(this, Array.prototype.slice.apply(arguments));
     counter %= handlers.length;
-});
-
- $(document).ready(
-            function() {
-                setInterval(function() {
-                    var randomnumber = Math.floor(Math.random() * 100);
-                    $('#show').text(
-                            'I am getting refreshed every 3 seconds..! Random Number ==> '
-                                    + randomnumber);
-                }, 3000);
 });
 
 // Design Funktionen Ende ------------------------------------------------------------------------------------------------------------------------------------------------
