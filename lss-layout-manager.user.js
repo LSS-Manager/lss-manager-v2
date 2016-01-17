@@ -182,7 +182,11 @@ $(document).keydown(function(e) {
 
         } else if (e.keyCode == 89) {
             // Y Erster Einsatz auf
-            $("a[href^='/missions']")[0].click();
+			$.each( $("a[href^='/missions']").parent(), function( key, value ) {
+				if(value.innerHTML.indexOf("[Verband]")==-1){
+					$("a[href^='/missions']")[key].click();
+				}
+			});
         }
 
         return e.returnValue;
@@ -521,7 +525,8 @@ function drawCircles(radius){
 			cars += car_list(value['stationId']);
 			var circle = L.circle([value['stationLat'],value['stationLng']], radius, {
 				color: col,
-				fillOpacity: 0.3
+				fillOpacity: 0.3,
+				riseOnHover:true
 			}).addTo(map);
 			circle.bindLabel(cars);
 			markers.push(circle);
@@ -595,9 +600,10 @@ function car_list(building){
 /* Overwrite LSS function for building markers */
 var org_building_maps_draw = building_maps_draw;
 building_maps_draw = function(e) {
-    org_building_maps_draw(e);
+    //org_building_maps_draw(e);
+	var t=L.marker([e.latitude,e.longitude],{title:e.name,icon:icon_empty,riseOnHover:true}).bindLabel(e.name).addTo(map);t.building_id=e.id,"undefined"!=typeof e.opacity&&t.setOpacity(e.opacity),iconMapGenerate(e.building_marker_image,t),t.on("click",function(){lightboxOpen("/buildings/"+e.id)}),building_markers.push(t)
     $.each( building_markers, function( key, value ) {
-        value.bindLabel(value.options.title+car_list(value.building_id))
+        value.bindLabel(value.options.title+car_list(value.building_id), { zIndex: 999 });
     });
 }
 /* Fix the map when you click on it */
