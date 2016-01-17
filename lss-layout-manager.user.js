@@ -14,10 +14,11 @@
 // ==/UserScript==
 
 var curwindow = "#missions_outer";
-var nomap = false;
-var vv4 = false;
-var activem = false;
-var markers = [];
+	nomap = false
+	vv4 = false
+	activem = false
+	markers = []
+	mapfix = false;
 
 //$('<audio id="alert-audio"><source src="https://a.clyp.it/xdjilqg4.mp3" type="audio/mpeg"></audio>').appendTo('body');
 
@@ -599,6 +600,10 @@ building_maps_draw = function(e) {
         value.bindLabel(value.options.title+car_list(value.building_id))
     });
 }
+/* Fix the map when you click on it */
+map.on('mousedown', function(){
+	if(!mapfix){map.invalidateSize(true);mapfix=true;}
+});
 /* Redraw buildings when script is loaded */
 $.each( building_markers, function( key, value ) {
 	value.bindLabel(value.label._content+car_list(value.building_id))
