@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         LSS Layout Manger
 // @namespace    http://www.lss-manager.de
-// @version      2.1
+// @version      2.2
 // @description  Mit der Tastatur Alarmieren oder sonstiges
 // @author       lost & northdegree
 // @include      http://www.leitstellenspiel.de/
