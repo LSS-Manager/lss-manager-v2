@@ -601,9 +601,11 @@ building_maps_draw = function(e) {
     });
 }
 /* Fix the map when you click on it */
-map.on('mousedown', function(){
-	if(!mapfix){map.invalidateSize(true);mapfix=true;}
-});
+if(typeof map != "undefined"){
+	map.on('mousedown', function(){
+		if(!mapfix){map.invalidateSize(true);mapfix=true;}
+	});
+}
 /* Redraw buildings when script is loaded */
 $.each( building_markers, function( key, value ) {
 	value.bindLabel(value.label._content+car_list(value.building_id))
