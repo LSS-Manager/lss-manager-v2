@@ -592,10 +592,12 @@ function car_list(building){
 }
 
 /* Overwrite LSS function for building markers */
-function building_maps_draw(e){
-
-	var t=L.marker([e.latitude,e.longitude],{icon:icon_empty}).bindLabel(e.name+car_list(e.id)).addTo(map)
-	t.building_id=e.id,"undefined"!=typeof e.opacity&&t.setOpacity(e.opacity),iconMapGenerate(e.building_marker_image,t),t.on("click",function(){lightboxOpen("/buildings/"+e.id)}),building_markers.push(t)
+var org_building_maps_draw = building_maps_draw;
+building_maps_draw = function(e) {
+    org_building_maps_draw(e);
+    $.each( building_markers, function( key, value ) {
+        value.bindLabel(value.label._content+car_list(value.building_id))
+    });
 }
 /* Redraw buildings when script is loaded */
 $.each( building_markers, function( key, value ) {
