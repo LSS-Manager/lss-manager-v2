@@ -596,7 +596,7 @@ var org_building_maps_draw = building_maps_draw;
 building_maps_draw = function(e) {
     org_building_maps_draw(e);
     $.each( building_markers, function( key, value ) {
-        value.bindLabel(e.name+car_list(e.id))
+        value.bindLabel(value.options.title+car_list(value.building_id))
     });
 }
 /* Redraw buildings when script is loaded */
