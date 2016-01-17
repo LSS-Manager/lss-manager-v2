@@ -10,7 +10,7 @@
 // @include      http://www.missionchief.com
 // @version      1
 // @grant        none
-// @run-at document-start
+// @run-at idle
 // ==/UserScript==
 
 var curwindow = "#missions_outer";
