@@ -616,6 +616,8 @@ building_maps_draw = function(e) {
     //org_building_maps_draw(e);
 	var t=L.marker([e.latitude,e.longitude],{title:e.name,icon:icon_empty,riseOnHover:true}).bindLabel(e.name).addTo(map);t.building_id=e.id,"undefined"!=typeof e.opacity&&t.setOpacity(e.opacity),iconMapGenerate(e.building_marker_image,t),t.on("click",function(){lightboxOpen("/buildings/"+e.id)}),building_markers.push(t)
     $.each( building_markers, function( key, value ) {
+		value.hideLabel();
+		value.unbindLabel();
         value.bindLabel(value.options.title+car_list(value.building_id), { zIndex: 999 });
     });
 }
