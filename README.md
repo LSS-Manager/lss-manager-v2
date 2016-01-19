@@ -15,7 +15,7 @@ LSS Layout Manager ist eine Erweiterung für das Online Spiel "Leitstellenspiel.
 > mehr Features folgen
 
 ### Version
-2.2
+2.3
 
 ### Installation
 
@@ -74,10 +74,11 @@ Northdegree & Ich arbeiten derzeit an dem Script. Wenn du auch interesse hast mi
 - Eagle's ALS Integration
 - Glyphicons ersetzen
 - Wachenansicht: Hinter FZ link zur Bearbeitung des jeweiligen FZ
+- Autoupdate/refresh des Hover-Info-Label der Wachen
 
 ### Bekannte Fehler
 Wenn ein Fehler bekannt ist, ist er ```Bestätigt```, wenn wir den Fehler nocht nicht rekonstruieren konnten, kann es sein das es kein Fehler des Scripts ist - daher sind diese ```Noch nicht bestätigt```.
-- ```Bestätigt``` Beim Rauszoomen der Karte mit Hover auf einem Gebäude, bleibt das Hover Menü zur Übersicht 'stecken' wenn andere Gebäude nicht auf der Karte gerade zu sehen sind & entfernt sich nicht
+- ```Bestätigt``` ~~Beim Rauszoomen der Karte mit Hover auf einem Gebäude, bleibt das Hover Menü zur Übersicht 'stecken' wenn andere Gebäude nicht auf der Karte gerade zu sehen sind & entfernt sich nicht~~
 - ```Bestätigt``` Sortierung der Einsätze, nutzen des Nächsten/Vorherigen Einsatzes teils Fehlerhaft 
 - ```Noch nicht bestätigt``` Fz werden sporadisch rückalarmiert
 - ```Bestätigt``` Responsive fehlt teils
