@@ -18,7 +18,8 @@ var curwindow = "#missions_outer";
 	vv4 = false
 	markers = []
 	mapfix = false
-	nofms = false;
+	nofms = false
+	var buildingsById = {0: 'Feuerwache',1: 'Feuerwehrschule',2: 'Rettungswache',3: 'Rettungsschule',4: 'Krankenhaus',5: 'Rettungshubschrauber-Station',6: 'Polizeiwache',7: 'Leitstelle',8: 'Polizeischule',9: 'THW',10: 'THW Schule',11: 'Bereitschaftspolizei'};
 
 //$('<audio id="alert-audio"><source src="https://a.clyp.it/xdjilqg4.mp3" type="audio/mpeg"></audio>').appendTo('body');
 
@@ -26,90 +27,11 @@ var curwindow = "#missions_outer";
 
 $('head')
     .append('<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">')
-    .append('<link href="https://fonts.googleapis.com/css?family=Titillium+Web" rel="stylesheet" type="text/css">');
+    .append('<link href="https://fonts.googleapis.com/css?family=Titillium+Web" rel="stylesheet" type="text/css">')
+	.append('<link rel="stylesheet" href="http://lss.lost.design/lss-manager.css">');
 
 $("a[class^='navbar-brand hidden-xs']").append("<a href='http://forum.leitstellenspiel.de/index.php/Thread/8077-REDESIGNS-by-lost/'><img src='http://i.imgur.com/cPr2nKr.png' style='width:250px; top: 10px;left: 0; position: absolute !important;'></a>");
 //$("#map_outer").removeAttr('style');
-
-// Custom CSS --------------------------------------------------------------------------------------------------------------------------------
-(function() {var css = [
-	"/* 	",
-	"	version 4.0.0",
-	"	für leitstellenspiel.de",
-	"	copyright lost @ leitstellenspiel | http://lost.design",
-	"*/",
-	"html,body{overflow-x:hidden;max-width:100%;background-color:#f5f5f5;font-family:Titillium Web!important}",
-	".mission_vehicle_state{position:relative;margin-top:-60px;margin-left:-20px;height:30px!important;width:30px!important}",
-	".glyphicon{font-size:11px;line-height:2}",
-	".missionSideBarEntry{margin-bottom:10px;margin-top:10px;border:10px;border-color:#34495e;border-bottom:solid;background-color:#f5f5f5;border-radius:5px}",
-	".panel-heading,.panel,.panel-body{border:none;box-shadow:none}",
-	".panel-heading{background-image:none!important;color:#34495e}",
-	".panel{background-image:none!important;color:#2c3e50!important;border-radius:10px;border-top:solid;border-bottom:solid;border-color:#34495e!important}",
-	".missionSideBarEntry .panel-body{background-color:#f5f5f5}",
-	".missionSideBarEntry .panel{border-bottom:none!important}",
-	".map_position_mover{color:#2c3e50!important}",
-	".navbar-default,.dropdown-menu{background-image:none!important;background-color:#e74c3c;border-radius:0;border:5px;border-bottom:solid}",
-	".btn,.progress,.alert{background-image:none!important;border:none;border-radius:5px}",
-	".progress-bar-striped,.progress-striped .progress-bar{background-size:20px 20px;height:15px}",
-	".progress{background-color:#486683;height:13px}",
-	".small .progress{height:6px}",
-	"#map_outer{margin-top:-20px;width:65%;height:900px}",
-	".progress-bar-danger{background-color:#e74c3c}",
-	".col-xs-11{width:100%!important;margin-top:-20px;position:relative}",
-	"#missions-panel-body{height:830px}",
-	"#verband_einsatz{height:870px}",
-	"#missions_outer,#verband_outer,#chat_outer,#radio_outer,#buildings_outer,#settings_outer{width:33%;right:35px;position:absolute}",
-	"#chat_outer,#verband_outer,#settings_outer,#radio_outer,#buildings_outer{display:none}",
-	".container-fluid{padding:0}",
-	"#map{height:900px}",
-	".well{background-image:none;border:none;background-color:#fff;box-shadow:none}",
-	".small{width:24%!important;display:inline-block!important;margin-right:4px}",
-	"#chat_outer .panel-heading,#radio_outer .panel-heading,#buildings_outer .panel-heading,#verband-head,#settings_outer .panel-heading{background-color:#e74c3c;color:#fff}",
-	"#chat_outer .panel-body,#radio_outer .panel-body,#buildings_outer .panel-body,#settings_outer .panel-body{max-height:820px!important;height:850px!important;overflow:auto}",
-	"#radio_messages_important li{background-color:#c0392b;height:27px;border-radius:5px;color:#fff;-webkit-animation-name:blink;animation-name:blink;-webkit-animation-iteration-count:infinite;animation-iteration-count:infinite;-webkit-animation-timing-function:cubic-bezier(1,0,0,1);animation-timing-function:cubic-bezier(1,0,0,1);-webkit-animation-duration:1s;animation-duration:1s;text-transform:uppercase}",
-	"#missions ul,#verband_einsatz ul,#buildings ul,#mission_list_krankentransporte ul,#mission_list_krankentransporte ul,#radio ul,#alliance_chat ul{padding-left:10px!important}",
-	".building_list_fms{border-radius:10px}",
-	".building_list_fms_5{border-radius:5px}",
-	"#radio_messages .btn{border:2px;background-color:#f5f5f5}",
-	"#radio_messages{font-size:13px}",
-	"#chat_outer li{font-size:13px;line-height:1.8}",
-	".tab-content{width:95%;margin:0 auto}",
-	"#missions-aa,#verband-aa,#radio-aa,#chat-aa,#buildings-aa,#lss-setting{font-weight:600!important;font-size:20px}",
-	//"img[src*='/images/logo.de.png']{content:url('http://i.imgur.com/cPr2nKr.png')}",
-	"#lost-menu{z-index:999;right:10px;font-weight:700!important;font-size:13px;text-transform:uppercase;position:absolute;border-radius:0px;}",
-	".onoffswitch{position:relative;width:30px;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none}",
-	".onoffswitch-checkbox{display:none}",
-	".onoffswitch-label{display:block;overflow:hidden;cursor:pointer;height:15px;padding:0;line-height:15px;border:2px solid #CCC;border-radius:15px;background-color:#FFF;transition:background-color .3s ease-in}",
-	".onoffswitch-label:before{content:\"\";display:block;width:15px;margin:0;background:#FFF;position:absolute;top:0;bottom:0;right:13px;border:2px solid #CCC;border-radius:15px;transition:all .3s ease-in 0}",
-	".onoffswitch-checkbox:checked + .onoffswitch-label{background-color:#49E845}",
-	".onoffswitch-checkbox:checked + .onoffswitch-label,.onoffswitch-checkbox:checked + .onoffswitch-label:before{border-color:#49E845}",
-	".onoffswitch-checkbox:checked + .onoffswitch-label:before{right:0}",
-	"#s_close{float:right;color:#fff}",
-	".leaflet-label{border:solid #34495e;border-radius:10px;background-color:#f5f5f5;border-left:5px;border-right:5px;z-index:99999}",
-	".building_leaflet_text{font-size:16px}",
-	".patient_progress {height: 7px !important;}",
-	"#verband_outer, #settings_outer {margin-top: 73px;}"
-].join("\n");
-if (typeof GM_addStyle != "undefined") {
-	GM_addStyle(css);
-} else if (typeof PRO_addStyle != "undefined") {
-	PRO_addStyle(css);
-} else if (typeof addStyle != "undefined") {
-	addStyle(css);
-} else {
-	var node = document.createElement("style");
-	node.type = "text/css";
-	node.appendChild(document.createTextNode(css));
-	var heads = document.getElementsByTagName("head");
-	if (heads.length > 0) {
-		heads[0].appendChild(node); 
-	} else {
-		// no head yet, stick it whereever
-		document.documentElement.appendChild(node);
-	}
-}
-})();
-// Custom CSS Ende --------------------------------------------------------------------------------------------------------------------------------
 
 
 
@@ -299,10 +221,209 @@ $("#s_close").click(function(){
     $('#settings-spin').removeClass('fa-spin');
 });
 
+//  Map neu ausrichten bei klick
+if(typeof map != "undefined"){
+	map.on('mousedown', function(){
+		if(!mapfix){map.invalidateSize(true);mapfix=true;}
+	});
+}
+
+// Alle Wachen
+function get_buildings(){
+	var data = [];
+	$('#building_list').find('.building_list_li').each(function(index, element) {
+		var stationId = $(element).find('.building_list_caption').find('.building_marker_image').attr('building_id'),
+			stationName = $(element).find('.building_list_caption').find('.map_position_mover').html(),
+			stationLat = $(element).find('.building_list_caption').find('.map_position_mover').attr('data-latitude'),
+			stationLng = $(element).find('.building_list_caption').find('.map_position_mover').attr('data-longitude'),
+			stationType = $(element).attr('building_type_id');
+
+		var tempStationData = {
+			'stationId' : stationId,
+			'stationName' : stationName,
+			'stationLat' : stationLat,
+			'stationLng' : stationLng,
+			'stationType' : stationType,
+		};
+
+		data.push(tempStationData);
+	});
+	return data;
+}
+
+// Alle Fahrzeuge einer Wache
+function car_list(building){
+	data = [];
+	$('#vehicle_building_'+ building).find('li').each(function(index, element) {
+		data.push({"id":$(element).attr('vehicle_id'),"name":$(element).find('a').html(),"type":$(element).find('a').attr('vehicle_type_id'),"fms":$(element).find(".building_list_fms").html()});
+	});
+	return data;
+}
+
+// Formatiert Fahrzeugliste um (mit FMS)
+function car_list_printable(list){
+	data="";
+	$.each(list,function (key,car){
+		data+= "<br>&nbsp;&nbsp;&nbsp;<span class='building_list_fms building_list_fms_"+car['fms']+"'>"+car['fms']+"</span> "+car['name'];
+	});
+	return data;
+}
+
+// Wachen-Planung
+function drawCircles(radius){
+	$.each( markers, function( key, value ) {
+		map.removeLayer(value);
+	});
+	markers = [];
+	data = get_buildings();
+	map.attributionControl.addAttribution("Wachen-Planung by Lost &amp; Northdegree");
+	// Map refresh
+	map.invalidateSize(true);
+	// Add markers for all buildings
+	$.each( data, function( key, value ) {
+		col = 'red'
+		draw = false
+		if(value['stationType']==0 && $('#mark_fw').is(":checked")){draw=true;}
+		else if(value['stationType']==6 && $('#mark_pol').is(":checked")){draw=true;col='green'}
+		else if(value['stationType']==2 && $('#mark_rw').is(":checked")){draw=true;col='orange'}
+		else if(value['stationType']==9 && $('#mark_thw').is(":checked")){draw=true;col='darkblue'}
+		else if(value['stationType']==11 && $('#mark_bp').is(":checked")){draw=true;col='lightblue'}
+		else if(value['stationType']==4 && $('#mark_kh').is(":checked")){draw=true;col='black'}
+		if(draw==true){
+			cars = "<span class='building_leaflet_text' style='z-index:99999; color: "+col+";'><i class='fa fa-building'></i> "+value['stationName']+"</span>";
+			cars += car_list_printable(car_list(value['stationId']));
+			var circle = L.circle([value['stationLat'],value['stationLng']], radius, {
+				color: col,
+				fillOpacity: 0.3,
+				riseOnHover:true
+			}).addTo(map);
+			circle.bindLabel(cars);
+			markers.push(circle);
+		}
+	});
+}
+
+
+// Gebäude neu zeichnen
+function redraw_buildings(){
+	$.each( building_markers, function( key, value ) {
+		cars = car_list(value.building_id);
+		data = value.options.title;
+		if(cars.length>0){
+			data+='&nbsp;<i class="fa fa-car"></i>'+cars.length;
+			data+=car_list_printable(cars);
+		}
+		value.bindLabel(data, { zIndex: 999 });});
+		building_maps_redraw();
+}
+
+// === Ueberschreibe LSS-Funktionen ===
+/* Overwrite LSS function for radio messages */
+var org_radioMessage = radioMessage;
+radioMessage = function(e) {
+	// FMS5 fuer Verband
+	if(e.type=="vehicle_fms" && e.fms == 5 && e.user_id!=user_id && nofms == true){
+		return false;
+	}
+	// FMS bei Gebaeuden updaten
+	if(e.user_id==user_id){
+		redraw_buildings();
+	}
+	org_radioMessage(e);
+}
+
+/* Overwrite LSS function for building markers */
+var org_building_maps_draw = building_maps_draw;
+building_maps_draw = function(e) {
+    //org_building_maps_draw(e);
+	var t=L.marker([e.latitude,e.longitude],{title:e.name,icon:icon_empty,riseOnHover:true}).bindLabel(e.name).addTo(map);t.building_id=e.id,"undefined"!=typeof e.opacity&&t.setOpacity(e.opacity),iconMapGenerate(e.building_marker_image,t),t.on("click",function(){lightboxOpen("/buildings/"+e.id)}),building_markers.push(t)
+    $.each( building_markers, function( key, value ) {
+		value.hideLabel();
+		value.unbindLabel();
+		cars = car_list(value.building_id);
+		data = value.options.title;
+		if(cars.length>0) {
+			data+='&nbsp;<i class="fa fa-car"></i>'+cars.length;
+			data+=car_list_printable(cars);
+		}
+        value.bindLabel(data, { zIndex: 999 });
+    });
+}
+
+// === Switches in Einstellungen ===
+// Version 4
+function d_v4() {
+    if($("#s-v4").is(":checked")){
+		vv4 = true;
+		$("#s_close").css("display", "block");
+        $("#map").css("height","550px");
+        $("#missions_outer").css("display","");
+        $("#missions-panel-body").css("height","1320px");
+        $("footer").css("display","none");
+        $("#buildings_outer")
+            .removeAttr('style')            
+            .css("left", "-10px")
+            .css("right", "asdf")
+            .css("width", "23%")
+            .css("display", "")
+            .css("top", "asdf")
+            .css("margin-top", "520px")
+			.fadeIn(500)
+			.slideDown(1000);
+        $("#chat_outer")
+            .removeAttr('style')
+            .css("left", "21.5%")
+            .css("right", "asdf")
+            .css("width", "23%")
+            .css("display", "none")
+            .css("top", "asdf")
+            .css("margin-top", "520px")
+			.fadeIn(500)
+			.slideDown(1000);
+        $("#radio_outer")
+            .css("opacity", "1")
+			.css("display", "none")
+            .css("width", "22%")
+            .css("right", "34.5%")
+            .css("left", "asdf")
+            .css("top", "asdf")
+            .css("margin-top", "520px")
+			.fadeIn(500)
+			.slideDown(1000);
+        $("#settings_outer")
+            .css("display","")
+            .css("z-index","999")
+            .fadeOut(500);
+        $("#missions-aa, #verband-aa, #buildings-aa, #chat-aa, #radio-aa").addClass("disabled");
+        $('#missions_outer,#chat_outer,#buildings_outer,#radio_outer,#map_outer')
+			.css("opacity","1")
+			.css("filter","")
+			.css("-webkit-filter","")
+			.css("-moz-filter","")
+			.css("-o-filter","")
+			.css("-ms-filter","");
+        $('#settings-spin').removeClass('fa-spin');
+	}else{
+		vv4 = false;
+		$("#missions_outer,#buildings_outer,#chat_outer,#radio_outer").removeAttr("style");
+		$("#missions_outer,#buildings_outer,#chat_outer,#radio_outer")
+			.css("display", "none")
+			.css("width", "33%")
+			.css("right", "0")
+			.css("position", "absolute");
+        $("#map").css("height", "900px");
+        $("#map-switch").css("background-color","");
+        $("#missions-aa, #verband-aa, #buildings-aa, #chat-aa, #radio-aa").addClass("disabled");
+        $("#settings_outer")
+            .css("z-index","");       
+        $("#missions-panel-body").css("height","850px");
+    }
+}
+$("#s-v4").click(d_v4);
+
 // Map Mode
-var handlers = [
-    // on first click:
-    function() {
+function mapMode(){
+	if($("#myonoffswitch").is(":checked")) {
 		nomap = true;
         $("#map").css("display", "none");
 		$("#s_close").css("display", "block");
@@ -352,11 +473,7 @@ var handlers = [
 		.css("-ms-filter","");
         
         $('#settings-spin').removeClass('fa-spin');
-
-    },
-
-    // on second click:
-    function() {
+    }else{
 		nomap = false;
 		$("#missions_outer,#buildings_outer,#chat_outer,#radio_outer").removeAttr("style");
 		$("#missions_outer,#buildings_outer,#chat_outer,#radio_outer")
@@ -370,164 +487,10 @@ var handlers = [
         $("#settings_outer")
             .css("z-index","");       
     }
-];
-
-var counter = 0;
-$("#myonoffswitch").click(function() {
-    handlers[counter++].apply(this, Array.prototype.slice.apply(arguments));
-    counter %= handlers.length;
-});
-
-// Version 4
-var swv4 = [
-    // on first click:
-    function() {
-		vv4 = true;
-		$("#s_close").css("display", "block");
-        $("#map").css("height","550px");
-        
-        $("#missions_outer").css("display","");
-        $("#missions-panel-body").css("height","1320px");
-        $("footer").css("display","none");
-        
-        
-        $("#buildings_outer")
-            .removeAttr('style')            
-            .css("left", "-10px")
-            .css("right", "asdf")
-            .css("width", "23%")
-            .css("display", "")
-            .css("top", "asdf")
-            .css("margin-top", "520px")
-			.fadeIn(500)
-			.slideDown(1000);
-        
-        $("#chat_outer")
-            .removeAttr('style')
-            .css("left", "21.5%")
-            .css("right", "asdf")
-            .css("width", "23%")
-            .css("display", "none")
-            .css("top", "asdf")
-            .css("margin-top", "520px")
-			.fadeIn(500)
-			.slideDown(1000);
-        
-        $("#radio_outer")
-            .css("opacity", "1")
-			.css("display", "none")
-            .css("width", "22%")
-            .css("right", "34.5%")
-            .css("left", "asdf")
-            .css("top", "asdf")
-            .css("margin-top", "520px")
-			.fadeIn(500)
-			.slideDown(1000);
-        
-        $("#settings_outer")
-            .css("display","")
-            .css("z-index","999")
-            .fadeOut(500)
-			//.slideDown(1000)
-        ;
-          
-        $("#missions-aa, #verband-aa, #buildings-aa, #chat-aa, #radio-aa").addClass("disabled");
-        
-        $('#missions_outer,#chat_outer,#buildings_outer,#radio_outer,#map_outer')
-		.css("opacity","1")
-		.css("filter","")
-		.css("-webkit-filter","")
-		.css("-moz-filter","")
-		.css("-o-filter","")
-		.css("-ms-filter","");
-        
-        $('#settings-spin').removeClass('fa-spin');
-
-    },
-
-    // on second click:
-    function() {
-		vv4 = false;
-		$("#missions_outer,#buildings_outer,#chat_outer,#radio_outer").removeAttr("style");
-		$("#missions_outer,#buildings_outer,#chat_outer,#radio_outer")
-			.css("display", "none")
-			.css("width", "33%")
-			.css("right", "0")
-			.css("position", "absolute");
-		
-        $("#map").css("height", "900px");
-        $("#map-switch").css("background-color","");
-        $("#missions-aa, #verband-aa, #buildings-aa, #chat-aa, #radio-aa").addClass("disabled");
-        $("#settings_outer")
-            .css("z-index","");       
-        $("#missions-panel-body").css("height","850px");
-    }
-];
-
-var counterv4 = 0;
-$("#s-v4").click(function() {
-    swv4[counterv4++].apply(this, Array.prototype.slice.apply(arguments));
-    counterv4 %= swv4.length;
-});
-// Map reload
-$('#map_reload').click(function() {
-	setTimeout(function() {
-		$('#map_reload').attr("checked",false);
-		map.invalidateSize(true);
-	}, 300);
-});
-// Wachen-Planung -------------------------------------------
-
-function drawCircles(radius){
-	$.each( markers, function( key, value ) {
-		map.removeLayer(value);
-	});
-	markers = [];
-	var data = [];
-	$('#building_list').find('.building_list_li').each(function(index, element) {
-		var stationId = $(element).find('.building_list_caption').find('.building_marker_image').attr('building_id'),
-			stationName = $(element).find('.building_list_caption').find('.map_position_mover').html(),
-			stationLat = $(element).find('.building_list_caption').find('.map_position_mover').attr('data-latitude'),
-			stationLng = $(element).find('.building_list_caption').find('.map_position_mover').attr('data-longitude'),
-			stationType = $(element).attr('building_type_id');
-
-		var tempStationData = {
-			'stationId' : stationId,
-			'stationName' : stationName,
-			'stationLat' : stationLat,
-			'stationLng' : stationLng,
-			'stationType' : stationType,
-		};
-
-		data.push(tempStationData);
-	});
-	map.attributionControl.addAttribution("Wachen-Planung by Lost &amp; Northdegree");
-	// Map refresh
-	map.invalidateSize(true);
-	// Add markers for all buildings
-	$.each( data, function( key, value ) {
-		col = 'red'
-		draw = false
-		if(value['stationType']==0 && $('#mark_fw').is(":checked")){draw=true;}
-		else if(value['stationType']==6 && $('#mark_pol').is(":checked")){draw=true;col='green'}
-		else if(value['stationType']==2 && $('#mark_rw').is(":checked")){draw=true;col='orange'}
-		else if(value['stationType']==9 && $('#mark_thw').is(":checked")){draw=true;col='darkblue'}
-		else if(value['stationType']==11 && $('#mark_bp').is(":checked")){draw=true;col='lightblue'}
-		else if(value['stationType']==4 && $('#mark_kh').is(":checked")){draw=true;col='black'}
-		if(draw==true){
-			cars = "<span class='building_leaflet_text' style='z-index:99999; color: "+col+";'><i class='fa fa-building'></i> "+value['stationName']+"</span>";
-			cars += car_list(value['stationId']);
-			var circle = L.circle([value['stationLat'],value['stationLng']], radius, {
-				color: col,
-				fillOpacity: 0.3,
-				riseOnHover:true
-			}).addTo(map);
-			circle.bindLabel(cars);
-			markers.push(circle);
-		}
-	});
 }
+$("#myonoffswitch").click(mapMode);
 
+// Markierungen auf den maps
 $('#x_radius,#mark_kh,#mark_bp,#mark_thw,#mark_rw,#mark_pol,#mark_fw').click(function() {
 	if($('#building_helper').is(":checked"))
 	{
@@ -539,9 +502,10 @@ $('#x_radius,#mark_kh,#mark_bp,#mark_thw,#mark_rw,#mark_pol,#mark_fw').click(fun
 	}
 });
 
-var helper = [
+// Wachen-Planung
+function build_help() {
     // on first click:
-    function() {
+    if($("#building_helper").is(":checked")){
 		$('#map_outer')
 			.css("opacity","1")
 			.css("filter","blur(0px)")
@@ -554,10 +518,7 @@ var helper = [
 		}else{
 			drawCircles(10000);
 		}
-    },
-
-    // on second click:
-    function() {
+    }else{
 		$('#map_outer')
 			.css("opacity","0.3")
 			.css("filter","blur(7px)")
@@ -571,72 +532,27 @@ var helper = [
 		markers = [];
 		map.attributionControl.removeAttribution("Wachen-Planung by Lost &amp; Northdegree");
     }
-];
+}
+$("#building_helper").click(build_help);
 
-var counterhelper = 0;
-$("#building_helper").click(function() {
-    helper[counterhelper++].apply(this, Array.prototype.slice.apply(arguments));
-    counterhelper %= helper.length;
-});
-
-var fms_switch = [
-    // on first click:
-    function() {
-		nofms = true;
-    },
-
-    // on second click:
-    function() {
+// FMS5 von Verbandsmitgliedern
+function fms_switch() {
+    if($("#sw_verband").is(":checked")){
 		nofms = false;
+	}else{
+		nofms = true;
     }
-];
+}
+$("#sw_verband").click(fms_switch);
 
-var fmscounter = 0;
-$("#sw_verband").click(function() {
-    fms_switch[fmscounter++].apply(this, Array.prototype.slice.apply(arguments));
-    fmscounter %= fms_switch.length;
+// Map neu ausrichten
+$('#map_reload').click(function() {
+	setTimeout(function() {
+		$('#map_reload').attr("checked",false);
+		map.invalidateSize(true);
+	}, 300);
 });
 
-function car_list(building){
-	adddata = "<br>"
-	$('#vehicle_building_'+ building).find('li').each(function(index, element) {
-		var carId = $(element).attr('vehicle_id'),
-			carName = $(element).find('a').html(),
-			carType = $(element).find('a').attr('vehicle_type_id')
-			carFMS = $(element).find(".building_list_fms").html();
-		adddata+= "&nbsp;&nbsp;&nbsp;<span class='building_list_fms building_list_fms_"+carFMS+"'>"+carFMS+"</span> "+carName+"<br>"
-	});
-	return adddata;
-}
-/* Keine Sounds für FMS5 bei Verbandsmitgliedern */
-var org_radioMessage = radioMessage;
-radioMessage = function(e) {
-	if(e.type=="vehicle_fms" && e.fms == 5 && e.user_id!=user_id && nofms == true){
-		return false;
-	}
-	org_radioMessage(e);
-}
-
-/* Overwrite LSS function for building markers */
-var org_building_maps_draw = building_maps_draw;
-building_maps_draw = function(e) {
-    //org_building_maps_draw(e);
-	var t=L.marker([e.latitude,e.longitude],{title:e.name,icon:icon_empty,riseOnHover:true}).bindLabel(e.name).addTo(map);t.building_id=e.id,"undefined"!=typeof e.opacity&&t.setOpacity(e.opacity),iconMapGenerate(e.building_marker_image,t),t.on("click",function(){lightboxOpen("/buildings/"+e.id)}),building_markers.push(t)
-    $.each( building_markers, function( key, value ) {
-		value.hideLabel();
-		value.unbindLabel();
-        value.bindLabel(value.options.title+car_list(value.building_id), { zIndex: 999 });
-    });
-}
-/* Fix the map when you click on it */
-if(typeof map != "undefined"){
-	map.on('mousedown', function(){
-		if(!mapfix){map.invalidateSize(true);mapfix=true;}
-	});
-}
 /* Redraw buildings when script is loaded */
-$.each( building_markers, function( key, value ) {
-	value.bindLabel(value.label._content+car_list(value.building_id))
-});
-building_maps_redraw();
+redraw_buildings();
 // Design Funktionen Ende
