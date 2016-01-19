@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         LSS Layout Manger
 // @namespace    http://www.lss-manager.de
-// @version      2.2
+// @version      2.3
 // @description  Mit der Tastatur Alarmieren oder sonstiges
 // @author       lost & northdegree
 // @include      http://www.leitstellenspiel.de/
@@ -28,7 +28,7 @@ $('head')
     .append('<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">')
     .append('<link href="https://fonts.googleapis.com/css?family=Titillium+Web" rel="stylesheet" type="text/css">');
 
-$(".logo").after("</a><a href='http://forum.leitstellenspiel.de/index.php/Thread/8077-REDESIGNS-by-lost/' style='font-size:12px; font-weight:600; top:20px; left:15%; color:#fff; position:absolute;'><p>made with <i class='fa fa-heart' style='color:orange; font-size: 14px;'></i> by lost (BETA VERSION)</p>");
+$("a[class^='navbar-brand hidden-xs']").append("<a href='http://forum.leitstellenspiel.de/index.php/Thread/8077-REDESIGNS-by-lost/'><img src='http://i.imgur.com/cPr2nKr.png' style='width:250px; top: 10px;left: 0; position: absolute !important;'></a>");
 //$("#map_outer").removeAttr('style');
 
 // Custom CSS --------------------------------------------------------------------------------------------------------------------------------
@@ -51,21 +51,21 @@ $(".logo").after("</a><a href='http://forum.leitstellenspiel.de/index.php/Thread
 	".navbar-default,.dropdown-menu{background-image:none!important;background-color:#e74c3c;border-radius:0;border:5px;border-bottom:solid}",
 	".btn,.progress,.alert{background-image:none!important;border:none;border-radius:5px}",
 	".progress-bar-striped,.progress-striped .progress-bar{background-size:20px 20px;height:15px}",
-	".progress{background-color:#486683;height:15px}",
+	".progress{background-color:#486683;height:13px}",
 	".small .progress{height:6px}",
 	"#map_outer{margin-top:-20px;width:65%;height:900px}",
 	".progress-bar-danger{background-color:#e74c3c}",
 	".col-xs-11{width:100%!important;margin-top:-20px;position:relative}",
-	"#missions-panel-body{height:800px}",
-	"#verband_einsatz{height:850px}",
-	"#missions_outer,#verband_outer,#chat_outer,#radio_outer,#buildings_outer,#settings_outer{width:35%;top:100px;right:0;position:absolute}",
+	"#missions-panel-body{height:830px}",
+	"#verband_einsatz{height:870px}",
+	"#missions_outer,#verband_outer,#chat_outer,#radio_outer,#buildings_outer,#settings_outer{width:33%;right:35px;position:absolute}",
 	"#chat_outer,#verband_outer,#settings_outer,#radio_outer,#buildings_outer{display:none}",
 	".container-fluid{padding:0}",
 	"#map{height:900px}",
 	".well{background-image:none;border:none;background-color:#fff;box-shadow:none}",
 	".small{width:24%!important;display:inline-block!important;margin-right:4px}",
 	"#chat_outer .panel-heading,#radio_outer .panel-heading,#buildings_outer .panel-heading,#verband-head,#settings_outer .panel-heading{background-color:#e74c3c;color:#fff}",
-	"#chat_outer .panel-body,#radio_outer .panel-body,#buildings_outer .panel-body,#settings_outer .panel-body{max-height:820px!important;height:800px!important;overflow:auto}",
+	"#chat_outer .panel-body,#radio_outer .panel-body,#buildings_outer .panel-body,#settings_outer .panel-body{max-height:820px!important;height:850px!important;overflow:auto}",
 	"#radio_messages_important li{background-color:#c0392b;height:27px;border-radius:5px;color:#fff;-webkit-animation-name:blink;animation-name:blink;-webkit-animation-iteration-count:infinite;animation-iteration-count:infinite;-webkit-animation-timing-function:cubic-bezier(1,0,0,1);animation-timing-function:cubic-bezier(1,0,0,1);-webkit-animation-duration:1s;animation-duration:1s;text-transform:uppercase}",
 	"#missions ul,#verband_einsatz ul,#buildings ul,#mission_list_krankentransporte ul,#mission_list_krankentransporte ul,#radio ul,#alliance_chat ul{padding-left:10px!important}",
 	".building_list_fms{border-radius:10px}",
@@ -74,9 +74,9 @@ $(".logo").after("</a><a href='http://forum.leitstellenspiel.de/index.php/Thread
 	"#radio_messages{font-size:13px}",
 	"#chat_outer li{font-size:13px;line-height:1.8}",
 	".tab-content{width:95%;margin:0 auto}",
-	"#missions-aa,#verband-aa,#radio-aa,#chat-aa,#buildings-aa,#lss-setting{font-weight:600!important;font-size:11px}",
-	"img[src*='/images/logo.de.png']{content:url('http://i.imgur.com/cPr2nKr.png')}",
-	"#lost-menu{z-index:999;top:60px;right:15px;font-weight:700!important;font-size:13px;text-transform:uppercase;position:absolute}",
+	"#missions-aa,#verband-aa,#radio-aa,#chat-aa,#buildings-aa,#lss-setting{font-weight:600!important;font-size:20px}",
+	//"img[src*='/images/logo.de.png']{content:url('http://i.imgur.com/cPr2nKr.png')}",
+	"#lost-menu{z-index:999;right:10px;font-weight:700!important;font-size:13px;text-transform:uppercase;position:absolute;border-radius:0px;}",
 	".onoffswitch{position:relative;width:30px;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none}",
 	".onoffswitch-checkbox{display:none}",
 	".onoffswitch-label{display:block;overflow:hidden;cursor:pointer;height:15px;padding:0;line-height:15px;border:2px solid #CCC;border-radius:15px;background-color:#FFF;transition:background-color .3s ease-in}",
@@ -86,7 +86,9 @@ $(".logo").after("</a><a href='http://forum.leitstellenspiel.de/index.php/Thread
 	".onoffswitch-checkbox:checked + .onoffswitch-label:before{right:0}",
 	"#s_close{float:right;color:#fff}",
 	".leaflet-label{border:solid #34495e;border-radius:10px;background-color:#f5f5f5;border-left:5px;border-right:5px;z-index:99999}",
-	".building_leaflet_text{font-size:16px}"
+	".building_leaflet_text{font-size:16px}",
+	".patient_progress {height: 7px !important;}",
+	"#verband_outer, #settings_outer {margin-top: 73px;}"
 ].join("\n");
 if (typeof GM_addStyle != "undefined") {
 	GM_addStyle(css);
@@ -122,6 +124,12 @@ $("a:contains('Rückalarmieren')").attr('id', 'lf-zurück');
 $("small:contains('Fahrzeuge ausgeblendet.')").css('display', 'none');
 $(".panel-heading:contains('Einsätze')").css('background-color', '#e74c3c').css("color","#fff");
 //$("div[id^='mission_panel_heading']").css("background-color", "").css("color","#34495e");
+$("li[id^='patient_']").attr('id', 'pat_pro');
+$("div[id^='mission_patients_']").addClass('patient_progress');
+$("div[class^='visible-xs']").before('<br>');
+$(".logo").css('display', 'none');
+
+
 
 $(document).keydown(function(e) {
     if (!($("input").is(":focus"))) {
@@ -198,7 +206,8 @@ $("#news_li").before('<div class="col-sm-4 overview_outer" id="settings_outer"><
 $("#news_li").before('<div class="col-sm-4 overview_outer" id="verband_outer"><div id="verband1" class="sidebar-nav"><div class="panel panel-default" id="verband_einsatz"><div class="panel-heading" id="verband-head">Verbands-Einsätze</div><div class="panel-body" id="missions-panel-body"></div></div></div></div>');
 //Version 4 <div class="onoffswitch disabled"><input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="s-v4" unchecked><label class="onoffswitch-label" for="s-v4"></label></div>
 // Verbandseinsätze in separaten tab ---------------------------------------------------------
-$('#missions_outer').before('<div class="btn-group" id="lost-menu"><a href="#" class="btn btn-sm btn-default" id="missions-aa"><i id="missions-fire" class="fa fa-fire"></i> Einsätze</a><a href="#" class="btn btn-sm btn-default" id="verband-aa"><i class="fa fa-fire"></i> Verband</a><a href="#" class="btn btn-sm btn-default" id="radio-aa""><i id="radio-spin" class="fa fa-feed"></i> Funksprüche</a><a href="#" class="btn btn-sm btn-default" id="buildings-aa"><i id="buildings-spin" class="fa fa-building-o"></i> Wachen</a><a href="#" class="btn btn-sm btn-default" id="chat-aa"><i id="chat-spin" class="fa fa-comment-o"></i> Verbands Chat</a><a href="#" class="btn btn-sm btn-default" id="settings-aa" style="font-weight:600; font-size:11px;"><i id="settings-spin" class="fa fa-cog"></i> Einstellungen</a></div>');
+$('#missions_outer').before('<div class="btn-group-vertical" id="lost-menu"><a href="#" class="btn btn-sm btn-default" id="missions-aa" data-toggle="tooltip" data-placement="left" title="Einsätze"><i id="missions-fire" class="fa fa-fire"></i></a><a href="#" class="btn btn-sm btn-default" id="verband-aa" data-toggle="tooltip" data-placement="left" title="Verband"><i class="fa fa-fire"></i></a><a href="#" class="btn btn-sm btn-default" id="radio-aa" data-toggle="tooltip" data-placement="left" title="Funksprüche"><i id="radio-spin" class="fa fa-feed"></i></a><a href="#" class="btn btn-sm btn-default" id="buildings-aa" data-toggle="tooltip" data-placement="left" title="Wachen"><i id="buildings-spin" class="fa fa-building-o"></i></a><a href="#" class="btn btn-sm btn-default" id="chat-aa" data-toggle="tooltip" data-placement="left" title="Chat"><i id="chat-spin" class="fa fa-comment-o"></i></a><a href="#" class="btn btn-sm btn-default" id="settings-aa" style="font-weight:600; font-size:25px;" data-toggle="tooltip" data-placement="left" title="Einstellungen"><i id="settings-spin" class="fa fa-cog"></i></a></div>');
+$('#missions-aa, #verband-aa, #radio-aa, #buildings-aa, #settings-aa, #chat-aa').tooltip();
 $('#mission_select_alliance').css("display","none");
 $('#mission_list_alliance').detach().appendTo('#verband_einsatz #missions-panel-body');
 // Verbandseinsätze in separaten tab ende ----------------------------------------------------
@@ -352,8 +361,7 @@ var handlers = [
 		$("#missions_outer,#buildings_outer,#chat_outer,#radio_outer").removeAttr("style");
 		$("#missions_outer,#buildings_outer,#chat_outer,#radio_outer")
 			.css("display", "none")
-			.css("width", "35%")
-			.css("top", "100px")
+			.css("width", "33%")
 			.css("right", "0")
 			.css("position", "absolute");
         $("#map").css("display", "");
@@ -443,8 +451,7 @@ var swv4 = [
 		$("#missions_outer,#buildings_outer,#chat_outer,#radio_outer").removeAttr("style");
 		$("#missions_outer,#buildings_outer,#chat_outer,#radio_outer")
 			.css("display", "none")
-			.css("width", "35%")
-			.css("top", "100px")
+			.css("width", "33%")
 			.css("right", "0")
 			.css("position", "absolute");
 		
@@ -453,7 +460,7 @@ var swv4 = [
         $("#missions-aa, #verband-aa, #buildings-aa, #chat-aa, #radio-aa").addClass("disabled");
         $("#settings_outer")
             .css("z-index","");       
-        $("#missions-panel-body").css("height","800px");
+        $("#missions-panel-body").css("height","850px");
     }
 ];
 
