@@ -7,7 +7,7 @@
 // @include      http://www.leitstellenspiel.de/
 // @include      http://www.leitstellenspiel.de/*
 // @include      http://www.missionchief.com/*
-// @include      http://www.missionchief.com
+// @include      http://www.missionchief.com/
 // @version      1
 // @grant        none
 // @run          document-start
