@@ -19,6 +19,7 @@ var curwindow = "#missions_outer",
     markers = [],
     mapfix = false,
     nofms = false,
+    newmessages = 0,
     buildingsById = {
         0: 'Feuerwache',
         1: 'Feuerwehrschule',
@@ -129,6 +130,16 @@ $('#mission_select_alliance').css("display", "none");
 $('#mission_list_alliance').detach().appendTo('#verband_einsatz #missions-panel-body');
 // Verbandseinsätze in separaten tab ende ----------------------------------------------------
 
+// Anzeigen von offenen Sprechwünschen & Chatnachrichten
+function check_Messages(){
+    var fms5=($("#radio_messages_important [class^='radio_message_vehicle']").length)-($("#radio_messages_important [class^='radio_message_vehicle']:contains('Verband')").length);
+    $("#radio-aa #radio-spin").html(((fms5>0)?'<span class="building_list_fms building_list_fms_4" style="position:absolute;top:0px;right:0px;font-size:8pt;">'+fms5+'</span>':''));
+    $("#chat-aa #chat-spin").html(((newmessages>0)?'<span class="building_list_fms building_list_fms_4" style="position:absolute;top:0px;right:0px;font-size:8pt;">'+newmessages+'</span>':''));
+}
+setInterval(check_Messages, 3000);
+
+// Anzeigen von offenen Sprechwünschen & Chatnachrichten ende
+
 $('#map-switch').click(function () {
     $(this).find('i').toggleClass('fa-toggle-on fa-toggle-off');
 });
@@ -179,6 +190,9 @@ function changePage(tab) {
     var page = "#" + tab;
     page = page.replace("btn-alliance-new-mission", "buildings_outer");
     page = page.replace("-aa", "_outer");
+    if(page=="#chat_outer"){
+        newmessages=0;
+    }
     if ($(page)[0]) {
         if (page == "#settings_outer") {
             $('#settings-spin').addClass('fa-spin').css("z-index", "999");
@@ -340,7 +354,18 @@ function redraw_buildings() {
 }
 
 // === Ueberschreibe LSS-Funktionen ===
+/* Hook into alliance messages for message count */
+// ==-> To-Do: Catch everything with Faye
+var org_allianceChat = allianceChat;
+allianceChat = function(e){
+    if(e.user_id!=user_id && curwindow!="#chat_outer")
+        newmessages++;
+    org_allianceChat(e);
+}
+
 /* Overwrite LSS function for radio messages */
+// ==-> To-Do: Catch everything with Faye
+var org_radioMessage = radioMessage;
 var radioMessage = function (e) {
     // FMS5 fuer Verband
     if (e.type == "vehicle_fms" && e.fms == 5 && e.user_id != user_id && nofms == true) {
@@ -350,11 +375,11 @@ var radioMessage = function (e) {
     if (e.user_id == user_id) {
         redraw_buildings();
     }
-    radioMessage(e);
+    org_radioMessage(e);
 };
 
 /* Overwrite LSS function for building markers */
-var org_building_maps_draw = building_maps_draw;
+//var org_building_maps_draw = building_maps_draw;
 building_maps_draw = function (e) {
     //org_building_maps_draw(e);
     var t = L.marker([e.latitude, e.longitude], {
