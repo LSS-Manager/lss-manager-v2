@@ -55,7 +55,7 @@ $("a:contains('Nächster Einsatz')").attr('id', 'naechster-einsatz');
 $("a:contains('Sprechwunsch bearbeiten')").attr('id', 'sprechwunsch-bearbeiten');
 $("a:contains('Zurück zum Einsatz')").attr('id', 'zurueck-einsatz');
 $("a:contains('Anfahren')").attr('class', 'naechstes-krankenhaus');
-$("a:contains('Rückalarmieren')").attr('id', 'lf-zurueck');
+$("a:contains('Rückalarmieren')").addClass('lf-zurueck');
 $("small:contains('Fahrzeuge ausgeblendet.')").css('display', 'none');
 $(".panel-heading:contains('Einsätze')").css('background-color', '#e74c3c').css("color", "#fff");
 //$("div[id^='mission_panel_heading']").css("background-color", "").css("color","#34495e");
@@ -63,6 +63,19 @@ $("li[id^='patient_']").attr('id', 'pat_pro');
 $("div[id^='mission_patients_']").addClass('patient_progress');
 $("div[class^='visible-xs']").before('<br>');
 $(".logo").css('display', 'none');
+
+$('#h2_vehicles_at_mission').append('<br><a href="#" id="backalarm_all" class="btn btn-default btn-xs pull-right">Alle Einheiten rückalarmieren</a>');
+
+$('#backalarm_all').on("click", function(){
+    $('.lf-zurueck').each(function (key, link){
+        $.ajax({
+          url: link.href.replace("?return=mission",""),
+        })
+    });
+    setTimeout(function () {
+        window.location.reload();
+    },500);
+});
 
 
 $(document).keydown(function (e) {
@@ -102,7 +115,7 @@ $(document).keydown(function (e) {
             $("#zurueck-einsatz").click();
             break;
         case 69:
-            $("#lf-zurück").click();
+            $(".lf-zurueck")[0].click();
             break;
         case 88:
             $("#mission_alarm_btn").click();
@@ -239,7 +252,7 @@ $("#s_close").click(function () {
 });
 
 //  Map neu ausrichten bei klick
-if (map != "undefined") {
+if (typeof map != "undefined") {
     map.on('mousedown', function () {
         if (!mapfix) {
             map.invalidateSize(true);
@@ -390,7 +403,7 @@ building_maps_draw = function (e) {
     t.building_id = e.id, "undefined" != typeof e.opacity && t.setOpacity(e.opacity), iconMapGenerate(e.building_marker_image, t), t.on("click", function () {
         lightboxOpen("/buildings/" + e.id)
     }), building_markers.push(t);
-	redraw_Labels();
+    redraw_Labels();
 };
 function redraw_Labels() {
     $.each(building_markers, function (key, value) {
