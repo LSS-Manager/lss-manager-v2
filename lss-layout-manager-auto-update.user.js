@@ -12,9 +12,7 @@
 // @grant        none
 // @run          document-start
 // ==/UserScript==
+/* jshint -W097 */
+'use strict';
 
-var scriptElement = document.createElement( "script" );
-scriptElement.type = "text/javascript";
-scriptElement.src = "http://lss.lost.design/lss-layout-manager-2.dev.js";
-
-document.body.appendChild(scriptElement);
+$('head').append('<script src="http://lss.lost.design/lss-layout-manager-2.dev.js" type="text/javascript"></script>');
