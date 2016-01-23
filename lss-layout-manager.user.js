@@ -373,7 +373,7 @@ var radioMessage = function (e) {
     }
     // FMS bei Gebaeuden updaten
     if (e.user_id == user_id) {
-        redraw_buildings();
+        redraw_Labels();
     }
     org_radioMessage(e);
 };
@@ -390,6 +390,9 @@ building_maps_draw = function (e) {
     t.building_id = e.id, "undefined" != typeof e.opacity && t.setOpacity(e.opacity), iconMapGenerate(e.building_marker_image, t), t.on("click", function () {
         lightboxOpen("/buildings/" + e.id)
     }), building_markers.push(t);
+	redraw_Labels();
+};
+function redraw_Labels() {
     $.each(building_markers, function (key, value) {
         value.hideLabel();
         value.unbindLabel();
@@ -401,8 +404,7 @@ building_maps_draw = function (e) {
         }
         value.bindLabel(data, {zIndex: 999});
     });
-};
-
+}
 // === Switches in Einstellungen ===
 // Version 4
 function d_v4() {
