@@ -8,7 +8,6 @@
 // @include      http://www.leitstellenspiel.de/*
 // @include      http://www.missionchief.com/*
 // @include      http://www.missionchief.com/
-// @version      1
 // @grant        none
 // @run-at idle
 // ==/UserScript==
@@ -66,50 +65,51 @@ $(".logo").css('display', 'none');
 
 $('#h2_vehicles_at_mission').append('<br><a href="#" id="backalarm_all" class="btn btn-default btn-xs pull-right">Alle Einheiten rückalarmieren</a>');
 
-$('#backalarm_all').on("click", function(){
-    $('.lf-zurueck').each(function (key, link){
+$('#backalarm_all').on("click", function () {
+    $('.lf-zurueck').each(function (key, link) {
         $.ajax({
-          url: link.href.replace("?return=mission",""),
-        })
+            url: link.href.replace("?return=mission", "")
+        });
     });
-    setTimeout(function () {
+    window.setTimeout(function () {
         window.location.reload();
-    },500);
+    }, 500);
 });
 
 
 $(document).keydown(function (e) {
+    var naechstes_krankenhaus = $(".naechstes-krankenhaus");
     if (!($("input").is(":focus"))) {
         switch (e.keyCode) {
         case 68:
-            $("#naechster-einsatz")[0].click();
+            $("#naechster-einsatz").click();
             break;
         case 87:
-            $("#freigabe-verband")[0].click();
+            $("#freigabe-verband").click();
             break;
         case 65:
-            $("#vorheriger-einsatz")[0].click();
+            $("#vorheriger-einsatz").click();
             break;
         case 83:
             $("#alert_next").click();
             break;
         case 81:
-            $("#sprechwunsch-bearbeiten")[0].click();
+            $("#sprechwunsch-bearbeiten").click();
             break;
         case 49:
-            $(".naechstes-krankenhaus")[0].click();
+            naechstes_krankenhaus.eq(0).click();
             break;
         case 50:
-            $(".naechstes-krankenhaus")[1].click();
+            naechstes_krankenhaus.eq(1).click();
             break;
         case 51:
-            $(".naechstes-krankenhaus")[2].click();
+            naechstes_krankenhaus.eq(2).click();
             break;
         case 52:
-            $(".naechstes-krankenhaus")[3].click();
+            naechstes_krankenhaus.eq(3).click();
             break;
         case 53:
-            $(".naechstes-krankenhaus")[4].click();
+            naechstes_krankenhaus.eq(4).click();
             break;
         case 82:
             $("#zurueck-einsatz").click();
@@ -144,12 +144,13 @@ $('#mission_list_alliance').detach().appendTo('#verband_einsatz #missions-panel-
 // Verbandseinsätze in separaten tab ende ----------------------------------------------------
 
 // Anzeigen von offenen Sprechwünschen & Chatnachrichten
-function check_Messages(){
-    var fms5=($("#radio_messages_important [class^='radio_message_vehicle']").length)-($("#radio_messages_important [class^='radio_message_vehicle']:contains('Verband')").length);
-    $("#radio-aa #radio-spin").html(((fms5>0)?'<span class="building_list_fms building_list_fms_4" style="position:absolute;top:0px;right:0px;font-size:8pt;">'+fms5+'</span>':''));
-    $("#chat-aa #chat-spin").html(((newmessages>0)?'<span class="building_list_fms building_list_fms_4" style="position:absolute;top:0px;right:0px;font-size:8pt;">'+newmessages+'</span>':''));
+function check_Messages() {
+    var radio_messages_important = $("#radio_messages_important");
+    var fms5 = (radio_messages_important.find("[class^='radio_message_vehicle']").length) - (radio_messages_important.find("[class^='radio_message_vehicle']:contains('Verband')").length);
+    $("#radio-spin").html(((fms5 > 0) ? '<span class="building_list_fms building_list_fms_4" style="position:absolute;top:0px;right:0px;font-size:8pt;">' + fms5 + '</span>' : ''));
+    $("#chat-spin").html(((newmessages > 0) ? '<span class="building_list_fms building_list_fms_4" style="position:absolute;top:0px;right:0px;font-size:8pt;">' + newmessages + '</span>' : ''));
 }
-setInterval(check_Messages, 3000);
+window.setInterval(check_Messages, 3000);
 
 // Anzeigen von offenen Sprechwünschen & Chatnachrichten ende
 
@@ -203,8 +204,8 @@ function changePage(tab) {
     var page = "#" + tab;
     page = page.replace("btn-alliance-new-mission", "buildings_outer");
     page = page.replace("-aa", "_outer");
-    if(page=="#chat_outer"){
-        newmessages=0;
+    if (page == "#chat_outer") {
+        newmessages = 0;
     }
     if ($(page)[0]) {
         if (page == "#settings_outer") {
@@ -252,7 +253,7 @@ $("#s_close").click(function () {
 });
 
 //  Map neu ausrichten bei klick
-if (typeof map != "undefined") {
+if (map == "undefined") {
     map.on('mousedown', function () {
         if (!mapfix) {
             map.invalidateSize(true);
@@ -370,11 +371,12 @@ function redraw_buildings() {
 /* Hook into alliance messages for message count */
 // ==-> To-Do: Catch everything with Faye
 var org_allianceChat = allianceChat;
-allianceChat = function(e){
-    if(e.user_id!=user_id && curwindow!="#chat_outer")
+allianceChat = function (e) {
+    if (e.user_id != user_id && curwindow != "#chat_outer") {
         newmessages++;
+    }
     org_allianceChat(e);
-}
+};
 
 /* Overwrite LSS function for radio messages */
 // ==-> To-Do: Catch everything with Faye
@@ -604,7 +606,7 @@ $("#building_helper").click(build_help);
 
 // FMS5 von Verbandsmitgliedern
 function fms_switch() {
-    nofms =  $("#sw_verband").is(":checked");
+    nofms = $("#sw_verband").is(":checked");
 }
 $("#sw_verband").click(fms_switch);
 
