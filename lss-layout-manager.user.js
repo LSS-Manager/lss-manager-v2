@@ -82,46 +82,46 @@ $(document).keydown(function (e) {
     if (!($("input").is(":focus"))) {
         switch (e.keyCode) {
         case 68:
-            $("#naechster-einsatz").click();
+            $("#naechster-einsatz")[0].click();
             break;
         case 87:
-            $("#freigabe-verband").click();
+            $("#freigabe-verband")[0].click();
             break;
         case 65:
-            $("#vorheriger-einsatz").click();
+            $("#vorheriger-einsatz")[0].click();
             break;
         case 83:
-            $("#alert_next").click();
+            $("#alert_next")[0].click();
             break;
         case 81:
-            $("#sprechwunsch-bearbeiten").click();
+            $("#sprechwunsch-bearbeiten")[0].click();
             break;
         case 49:
-            naechstes_krankenhaus.eq(0).click();
+            naechstes_krankenhaus[0].click();
             break;
         case 50:
-            naechstes_krankenhaus.eq(1).click();
+            naechstes_krankenhaus[1].click();
             break;
         case 51:
-            naechstes_krankenhaus.eq(2).click();
+            naechstes_krankenhaus[2].click();
             break;
         case 52:
-            naechstes_krankenhaus.eq(3).click();
+            naechstes_krankenhaus[3].click();
             break;
         case 53:
-            naechstes_krankenhaus.eq(4).click();
+            naechstes_krankenhaus[4].click();
             break;
         case 82:
-            $("#zurueck-einsatz").click();
+            $("#zurueck-einsatz")[0].click();
             break;
         case 69:
             $(".lf-zurueck")[0].click();
             break;
         case 88:
-            $("#mission_alarm_btn").click();
+            $("#mission_alarm_btn")[0].click();
             break;
         case 89:
-            $("#mission_list").find("a[href^='/missions/']:eq(0)").click();
+            $("#mission_list").find("a[href^='/missions/']:eq(0)")[0].click();
             break;
         }
         return e.returnValue;
