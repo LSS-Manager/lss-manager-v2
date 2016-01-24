@@ -54,7 +54,7 @@ $("a:contains('Vorheriger Einsatz')").attr('id', 'vorheriger-einsatz');
 $("a:contains('Nächster Einsatz')").attr('id', 'naechster-einsatz');
 $("a:contains('Sprechwunsch bearbeiten')").attr('id', 'sprechwunsch-bearbeiten');
 $("a:contains('Zurück zum Einsatz')").attr('id', 'zurueck-einsatz');
-$("a:contains('Anfahren')").attr('class', 'naechstes-krankenhaus');
+$("a:contains('Anfahren')").addClass('naechstes-krankenhaus');
 $("a:contains('Rückalarmieren')").addClass('lf-zurueck');
 $("small:contains('Fahrzeuge ausgeblendet.')").css('display', 'none');
 $(".panel-heading:contains('Einsätze')").css('background-color', '#e74c3c').css("color", "#fff");
@@ -97,19 +97,19 @@ $(document).keydown(function (e) {
             $("#sprechwunsch-bearbeiten").click();
             break;
         case 49:
-            $(".naechstes-krankenhaus:eq(0)").click();
+            $(".naechstes-krankenhaus")[0].click();
             break;
         case 50:
-            $(".naechstes-krankenhaus:eq(1)").click();
+            $(".naechstes-krankenhaus")[1].click();
             break;
         case 51:
-            $(".naechstes-krankenhaus:eq(2)").click();
+            $(".naechstes-krankenhaus")[2].click();
             break;
         case 52:
-            $(".naechstes-krankenhaus:eq(3)").click();
+            $(".naechstes-krankenhaus")[3].click();
             break;
         case 53:
-            $(".naechstes-krankenhaus:eq(4)").click();
+            $(".naechstes-krankenhaus")[4].click();
             break;
         case 82:
             $("#zurueck-einsatz").click();
