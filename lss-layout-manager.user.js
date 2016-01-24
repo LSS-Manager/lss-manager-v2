@@ -42,7 +42,7 @@ var curwindow = "#missions_outer",
 $('head')
     .append('<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">')
     .append('<link href="https://fonts.googleapis.com/css?family=Titillium+Web" rel="stylesheet" type="text/css">')
-    .append('<link rel="stylesheet" href="http://lss.lost.design/lss-manager.css">');
+    .append('<link rel="stylesheet" href="http://proxy.northdegree.de:8080/lss-manager.css">');
 
 $("a[class^='navbar-brand hidden-xs']").append("<a href='http://forum.leitstellenspiel.de/index.php/Thread/8077-REDESIGNS-by-lost/'><img src='http://i.imgur.com/cPr2nKr.png' style='width:250px; top: 10px;left: 0; position: absolute !important;'></a>");
 //$("#map_outer").removeAttr('style');
