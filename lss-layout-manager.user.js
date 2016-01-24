@@ -59,8 +59,8 @@ $("a:contains('Rückalarmieren')").addClass('lf-zurueck');
 $("small:contains('Fahrzeuge ausgeblendet.')").css('display', 'none');
 $(".panel-heading:contains('Einsätze')").css('background-color', '#e74c3c').css("color", "#fff");
 //$("div[id^='mission_panel_heading']").css("background-color", "").css("color","#34495e");
-$("li[id^='patient_']").attr('id', 'pat_pro');
-$("div[id^='mission_patients_']").addClass('patient_progress');
+//$("li[id^='patient_']").attr('id', 'pat_pro');
+//$("div[id^='mission_patients_']").addClass('patient_progress');
 $("div[class^='visible-xs']").before('<br>');
 $(".logo").css('display', 'none');
 
@@ -82,19 +82,19 @@ $(document).keydown(function (e) {
     if (!($("input").is(":focus"))) {
         switch (e.keyCode) {
         case 68:
-            $("#naechster-einsatz").click();
+            $("#naechster-einsatz")[0].click();
             break;
         case 87:
-            $("#freigabe-verband").click();
+            $("#freigabe-verband")[0].click();
             break;
         case 65:
-            $("#vorheriger-einsatz").click();
+            $("#vorheriger-einsatz")[0].click();
             break;
         case 83:
             $("#alert_next").click();
             break;
         case 81:
-            $("#sprechwunsch-bearbeiten").click();
+            $("#sprechwunsch-bearbeiten")[0].click();
             break;
         case 49:
             $(".naechstes-krankenhaus")[0].click();
