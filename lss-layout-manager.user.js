@@ -1,23 +1,27 @@
+// =============================================================
+// "alpha.northdegree.de/lss" ersetzen mit "alpha.northdegree.de/lss"
+// =============================================================
 // ==UserScript==
-// @name         LSS Layout Manger
+// @name         LSS Manger 
 // @namespace    http://www.lss-manager.de
-// @version      2.3
+// @version      2.4
 // @description  Mit der Tastatur Alarmieren oder sonstiges
 // @author       lost & northdegree
 // @include      http://www.leitstellenspiel.de/
 // @include      http://www.leitstellenspiel.de/*
 // @include      http://www.missionchief.com/*
 // @include      http://www.missionchief.com/
-// @version      1
 // @grant        none
-// @run-at idle
+// @run-at       idle
 // ==/UserScript==
 
+// set variables and arrays --------------------------------------------------------------------------------------------------------------------------------
 var curwindow = "#missions_outer",
+    server = "http://proxy.northdegree.de/lss", // All files are getting loaded from this server (without ending /)
     markers = [],
     mapfix = false,
+    nightmode = 'false',
     newmessages = 0,
-	graphs = [],
     buildingsById = {
         "0": 'Feuerwache',
         "1": 'Feuerwehrschule',
@@ -43,7 +47,7 @@ var curwindow = "#missions_outer",
         "7": 'LF 20/16',
         "8": 'LF 10/6',
         "9": 'LF 16-TS',
-        "10": 'GW-Ã–l',
+        "10": 'GW-Öl',
         "11": 'GW-L2-Wasser',
         "12": 'GW-Messtechnik',
         "13": 'SW 1000',
@@ -66,7 +70,7 @@ var curwindow = "#missions_outer",
         "30": 'HLF 20',
         "31": 'RTH',
         "32": 'FuStW',
-        "33": 'GW-HÃ¶henrettung',
+        "33": 'GW-Höhenrettung',
         "34": 'ELW 2',
         "35": 'leBefKw',
         "36": 'MTW',
@@ -80,24 +84,65 @@ var curwindow = "#missions_outer",
         "44": 'Anh. DLE',
         "45": 'MLW 5',
         "46": 'WLF',
-        "47": 'AB-RÃ¼st',
+        "47": 'AB-Rüst',
         "48": 'AB-Atemschutz',
-        "49": 'AB-Ã–l',
+        "49": 'AB-Öl',
         "50": 'GruKw',
-        "51": 'FÃ¼Kw',
+        "51": 'FüKw',
         "52": 'GefKw'
     };
 
+// load previous lss settings --------------------------------------------------------------------------------------------------------------------------------
+function loadConfig(){
+    for (var key in localStorage){
+        if(key.indexOf("lssm_") === 0){
+            var val = localStorage.getItem(key.toString());
+            if (key == "lssm_nightmode" && val == "true") {
+                $("#night-mode").attr("checked",true);
+                nightmode = val;
+                NightMode();
+            } else if (key == "lssm_sw_verband" && val == "true") {
+                $("#sw_verband").click();
+            } else if (key == "lssm_mode_fms5" && val == "true") {
+                $("#moveFMS5-sw").click();
+            } else if (typeof val !== "null") {
+                $("#"+val).click();
+            }
+        }
+    }
+}
+
+// group car id's for chart --------------------------------------------------------------------------------------------------------------------------------
+function fz_type(id) {
+    /*
+        FW = 0
+        RD = 1
+        Pol/BP = 2
+        THW = 3
+    */
+    if (id <= 27 || (id >= 46 && id <= 49) || id == 30 || id == 33 || id == 34 || id == 36 || id == 37) {
+        return 0;
+    } else if (id == 28 || id == 29 || id == 31 || id == 38) {
+        return 1;
+    } else if (id >= 39 && id <= 45) {
+        return 3;
+    } else {
+        return 2;
+    }
+}
+
+// add extra recourses and own scripts --------------------------------------------------------------------------------------------------------------------------------
 $('head')
     .append('<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">')
     .append('<link href="https://fonts.googleapis.com/css?family=Titillium+Web" rel="stylesheet" type="text/css">')
-    .append('<link rel="stylesheet" href="http://proxy.northdegree.de:8080/lss-manager.css">');
+    .append('<link rel="stylesheet" href="'+server+'/lss-manager.css">')
+    .append('<script src="'+server+'/json2.js" type="text/javascript">');
 
-$("a[class^='navbar-brand hidden-xs']").append("<a href='http://forum.leitstellenspiel.de/index.php/Thread/8077-REDESIGN-by-lost-Northdegree-BETA-2-2/'><img src='http://i.imgur.com/cPr2nKr.png' style='width:250px; top: 10px;left: 0; position: absolute !important;'></a>");
-//$("#map_outer").removeAttr('style');
+// add link to thread and new logo --------------------------------------------------------------------------------------------------------------------------------
+$("a[class^='navbar-brand hidden-xs']").append("<a href='http://forum.leitstellenspiel.de/index.php/Thread/8077-REDESIGNS-by-lost/'><img src='http://i.imgur.com/cPr2nKr.png' style='width:250px; top: 10px;left: 0; position: absolute !important;'></a>");
 
 
-// Tastatur Alarmierung --------------------------------------------------------------------------------------------------------------------------------
+// add new id's for keyboard shortcuts --------------------------------------------------------------------------------------------------------------------------------
 $("a:contains('Im Verband freigeben')").attr('id', 'freigabe-verband');
 $("a:contains('Vorheriger Einsatz')").attr('id', 'vorheriger-einsatz');
 $("a:contains('Nächster Einsatz')").attr('id', 'naechster-einsatz');
@@ -107,14 +152,11 @@ $("a:contains('Anfahren')").addClass('naechstes-krankenhaus');
 $("a:contains('Rückalarmieren')").addClass('lf-zurueck');
 $("small:contains('Fahrzeuge ausgeblendet.')").css('display', 'none');
 $(".panel-heading:contains('Einsätze')").css('background-color', '#e74c3c').css("color", "#fff");
-//$("div[id^='mission_panel_heading']").css("background-color", "").css("color","#34495e");
-//$("li[id^='patient_']").attr('id', 'pat_pro');
-//$("div[id^='mission_patients_']").addClass('patient_progress');
 $("div[class^='visible-xs']").before('<br>');
 $(".logo").css('display', 'none');
-
 $('#h2_vehicles_at_mission').append('<br><a href="#" id="backalarm_all" class="btn btn-default btn-xs pull-right">Alle Einheiten rückalarmieren</a>');
 
+// backalarm all vehicles --------------------------------------------------------------------------------------------------------------------------------
 $('#backalarm_all').on("click", function () {
     $('.lf-zurueck').each(function (key, link) {
         $.ajax({
@@ -126,7 +168,7 @@ $('#backalarm_all').on("click", function () {
     }, 500);
 });
 
-
+// keyboard shutcuts function --------------------------------------------------------------------------------------------------------------------------------
 $(document).keydown(function (e) {
     if (!($("input").is(":focus"))) {
         switch (e.keyCode) {
@@ -176,23 +218,56 @@ $(document).keydown(function (e) {
         return e.returnValue;
     }
 });
-// Tastatur Alarmierung Ende ----------------------------------------------------------------------------------------------------------------
-//wichtiges : $("a[href^='/missions']")[0].click(); $("#lf-zurÃ¼ck")[0].click();
 
+// add settings, verbandstab, designmenu, dashboard & uhr
+$("#missions_outer")
+    .after('<div class="col-sm-4 overview_outer" id="settings_outer"><div id="settings1“ class="sidebar-nav"><div class="panel panel-default"><div class="panel-heading"><a href="#" id="s_close"><i class="fa fa-times-circle"></i></a>Einstellungen</div><div class="panel-body"><div class="col-md-12"><h4 style="line-height:0.5;">Leitstellenspiel</h4><div class="col-md-4">FMS5 Verband<div class="onoffswitch"><input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="sw_verband"><label class="onoffswitch-label" for="sw_verband"></label></div></div><div class="col-md-4">FMS5 in Map<div class="onoffswitch"><input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="moveFMS5-sw"><label class="onoffswitch-label" for="moveFMS5-sw"></label></div></div></div><div class="col-md-12"><br><h4 style="line-height:0.5;">Map</h4><div class="col-md-4"><!--<a href="#" id="map_reload" style="background-color:#f5f5f5;color:black;" class="btn btn-sm btn-info">Karte neu laden<i class="fa fa-refresh"></i></a>-->Karte neu ausrichten<div class="onoffswitch"><input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="map_reload" unchecked><label class="onoffswitch-label" for="map_reload"></label></div></div><div class="col-md-4">Wachen-Planung<div class="onoffswitch"><input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="building_helper" unchecked><label class="onoffswitch-label" for="building_helper"></label></div></div><div class="col-md-4">10 km Radius<div class="onoffswitch"><input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="x_radius" unchecked><label class="onoffswitch-label" for="x_radius"></label></div></div></div><div class="col-md-12"><br><h4 style="line-height:0.5;">Markierungen</h4><div class="col-md-4"><!--<a href="#" id="map_reload" style="background-color:#f5f5f5;color:black;" class="btn btn-sm btn-info">Karte neu laden<i class="fa fa-refresh"></i></a>-->Feuerwehr<div class="onoffswitch"><input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="mark_fw" checked><label class="onoffswitch-label" for="mark_fw"></label></div></div><div class="col-md-4">Polizei<div class="onoffswitch"><input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="mark_pol" unchecked><label class="onoffswitch-label" for="mark_pol"></label></div></div><div class="col-md-4">Rettungsdienst<div class="onoffswitch"><input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="mark_rw" unchecked><label class="onoffswitch-label" for="mark_rw"></label></div></div></div><div class="col-md-12"><div class="col-md-4"><!--<a href="#" id="map_reload" style="background-color:#f5f5f5;color:black;" class="btn btn-sm btn-info">Karte neu laden<i class="fa fa-refresh"></i></a>-->THW<div class="onoffswitch"><input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="mark_thw" unchecked><label class="onoffswitch-label" for="mark_thw"></label></div></div><div class="col-md-4">Bereitschaftspolizei<div class="onoffswitch"><input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="mark_bp" unchecked><label class="onoffswitch-label" for="mark_bp"></label></div></div><div class="col-md-4">Krankenhaus<div class="onoffswitch"><input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="mark_kh" unchecked><label class="onoffswitch-label" for="mark_kh"></label></div></div></div><div class="col-md-12"><br><h4 style="line-height:0.5;">Design</h4><div class="btn-group" id="color-menu"><a href="#" class="btn btn-sm btn-default" id="rot-design" style="background-color: transparent;"><i class="fa fa-circle" style="color:#e74c3c;"></i> Rot</a><a href="#" class="btn btn-sm btn-default" id="rtw-design" style="background-color: transparent;"><i class="fa fa-circle" style="color:#F7CA18;"></i> Gelb</a><a href="#" class="btn btn-sm btn-default" id="pol-design" style="background-color: transparent;"><i class="fa fa-circle" style="color:#2ecc71;"></i> Grün</a><a href="#" class="btn btn-sm btn-default" id="thw-design" style="background-color: transparent;"><i class="fa fa-circle" style="color:#3498db;"></i> Blau</a><a href="#" class="btn btn-sm btn-default" id="orange-design" style="background-color: transparent;"><i class="fa fa-circle" style="color:#f39c12;"></i> Orange</a><a href="#" class="btn btn-sm btn-default" id="pink-design" style="background-color: transparent;"><i class="fa fa-circle" style="color:#D2527F;"></i> Pink</a><a href="#" class="btn btn-sm btn-default" id="grau-design" style="background-color: transparent;"><i class="fa fa-circle" style="color:#6C7A89;"></i> Grau</a> </div><br><br><div class="col-md-4">Night Mode<div class="onoffswitch"><input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="night-mode" unchecked><label class="onoffswitch-label" for="night-mode"></label></div></div><div class="col-md-4">No Map Modus<div class="onoffswitch"><input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="nomap-mode" unchecked><label class="onoffswitch-label" for="nomap-mode"></label></div></div><div class="col-md-4">Full Map Modus<div class="onoffswitch"><input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="map-full" unchecked><label class="onoffswitch-label" for="map-full"></label></div></div><div class="col-md-4">Version 4 <div class="onoffswitch disabled"><input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="s-v4" unchecked><label class="onoffswitch-label" for="s-v4"></label></div></div><div class="col-md-4">Version 5<div class="onoffswitch disabled"><input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="s-v5" unchecked><label class="onoffswitch-label" for="s-v5"></label></div></div></div><div class="col-md-12"><br><br><br><p style="margin-top:20px;">Es handelt sich immer noch um eine Beta Version, wir bin für keine Schäden verantwortlich. <br><br>Das Script steht in keinem Bezug zum Leitstellenspiel.de - Abänderungen sind erlaubt, das veröffentlichen jedoch nicht.<p><a href="http://forum.leitstellenspiel.de/index.php/Thread/8077-REDESIGNS-by-lost/" style="font-size:12px; font-weight:600;"><p>made with <i class="fa fa-heart" style="color:red; font-size: 14px;"></i> by lost</a><a href="http://forum.leitstellenspiel.de/index.php/User/5627-Northdegree/" style="font-size:12px; font-weight:600; color:#e67e22;"> and some extra <i class="fa fa-heart" style="color:red; font-size: 14px;"></i> by Northdegree</a><p style="font-size:8px;">Verband Feuerwehr München & Umgebung</p></p></p></div></div></div>')
+    .after('<div class="col-sm-4 overview_outer" id="verband_outer"><div id="verband1" class="sidebar-nav"><div class="panel panel-default" id="verband_einsatz"><div class="panel-heading" id="verband-head">Verbands-Einsätze</div><div class="panel-body" id="missions-panel-body"></div></div></div></div>')
+    .before('<div class="btn-group-vertical" id="lost-menu"><a href="#" class="btn btn-sm btn-default" id="missions-aa" data-toggle="tooltip" data-placement="left" title="Einsätze"><i id="missions-fire" class="fa fa-fire"></i></a><a href="#" class="btn btn-sm btn-default" id="verband-aa" data-toggle="tooltip" data-placement="left" title="Verband"><i class="fa fa-fire"></i></a><a href="#" class="btn btn-sm btn-default" id="radio-aa" data-toggle="tooltip" data-placement="left" title="Funksprüche"><i id="radio-spin" class="fa fa-feed"></i></a><a href="#" class="btn btn-sm btn-default" id="buildings-aa" data-toggle="tooltip" data-placement="left" title="Wachen"><i id="buildings-spin" class="fa fa-building-o"></i></a><a href="#" class="btn btn-sm btn-default" id="chat-aa" data-toggle="tooltip" data-placement="left" title="Chat"><i id="chat-spin" class="fa fa-comment-o"></i></a><a href="#" class="btn btn-sm btn-default" id="settings-aa" style="font-weight:600; font-size:20px;" data-toggle="tooltip" data-placement="left" title="Einstellungen"><i id="settings-spin" class="fa fa-cog"></i></a></div>');
 
-// Design Funktionen ------------------------------------------------------------------------------------------------------------------------------------------------
-$("#news_li")
-    .before('<div class="col-sm-4 overview_outer" id="settings_outer"><div id="settings1â€œ class="sidebar-nav"><div class="panel panel-default"><div class="panel-heading"><a href="#" id="s_close"><i class="fa fa-times-circle"></i></a>Einstellungen</div><div class="panel-body"><div class="col-md-12"><h4 style="line-height:0.5;">Leitstellenspiel</h4><div class="col-md-4">FMS5 Verbandsmitglieder<div class="onoffswitch"><input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="sw_verband" checked><label class="onoffswitch-label" for="sw_verband"></label></div></div></div><div class="col-md-12"><br><h4 style="line-height:0.5;">Map</h4><div class="col-md-4"><!--<a href="#" id="map_reload" style="background-color:#f5f5f5;color:black;" class="btn btn-sm btn-info">Karte neu laden<i class="fa fa-refresh"></i></a>-->Karte neu ausrichten<div class="onoffswitch"><input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="map_reload" unchecked><label class="onoffswitch-label" for="map_reload"></label></div></div><div class="col-md-4">Wachen-Planung<div class="onoffswitch"><input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="building_helper" unchecked><label class="onoffswitch-label" for="building_helper"></label></div></div><div class="col-md-4">10 km Radius<div class="onoffswitch"><input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="x_radius" unchecked><label class="onoffswitch-label" for="x_radius"></label></div></div></div><div class="col-md-12"><br><h4 style="line-height:0.5;">Markierungen</h4><div class="col-md-4"><!--<a href="#" id="map_reload" style="background-color:#f5f5f5;color:black;" class="btn btn-sm btn-info">Karte neu laden<i class="fa fa-refresh"></i></a>-->Feuerwehr<div class="onoffswitch"><input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="mark_fw" checked><label class="onoffswitch-label" for="mark_fw"></label></div></div><div class="col-md-4">Polizei<div class="onoffswitch"><input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="mark_pol" unchecked><label class="onoffswitch-label" for="mark_pol"></label></div></div><div class="col-md-4">Rettungsdienst<div class="onoffswitch"><input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="mark_rw" unchecked><label class="onoffswitch-label" for="mark_rw"></label></div></div></div><div class="col-md-12"><div class="col-md-4"><!--<a href="#" id="map_reload" style="background-color:#f5f5f5;color:black;" class="btn btn-sm btn-info">Karte neu laden<i class="fa fa-refresh"></i></a>-->THW<div class="onoffswitch"><input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="mark_thw" unchecked><label class="onoffswitch-label" for="mark_thw"></label></div></div><div class="col-md-4">Bereitschaftspolizei<div class="onoffswitch"><input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="mark_bp" unchecked><label class="onoffswitch-label" for="mark_bp"></label></div></div><div class="col-md-4">Krankenhaus<div class="onoffswitch"><input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="mark_kh" unchecked><label class="onoffswitch-label" for="mark_kh"></label></div></div></div><div class="col-md-12"><br><h4 style="line-height:0.5;">Design</h4><div class="btn-group" id="color-menu"><a href="#" class="btn btn-sm btn-default" id="rot-design" style="background-color: transparent;"><i class="fa fa-circle" style="color:#e74c3c;"></i> Rot</a><a href="#" class="btn btn-sm btn-default" id="rtw-design" style="background-color: transparent;"><i class="fa fa-circle" style="color:#F7CA18;"></i> Gelb</a><a href="#" class="btn btn-sm btn-default" id="pol-design" style="background-color: transparent;"><i class="fa fa-circle" style="color:#2ecc71;"></i> Grün</a><a href="#" class="btn btn-sm btn-default" id="thw-design" style="background-color: transparent;"><i class="fa fa-circle" style="color:#3498db;"></i> Blau</a><a href="#" class="btn btn-sm btn-default" id="orange-design" style="background-color: transparent;"><i class="fa fa-circle" style="color:#f39c12;"></i> Orange</a><a href="#" class="btn btn-sm btn-default" id="pink-design" style="background-color: transparent;"><i class="fa fa-circle" style="color:#D2527F;"></i> Pink</a><a href="#" class="btn btn-sm btn-default" id="grau-design" style="background-color: transparent;"><i class="fa fa-circle" style="color:#6C7A89;"></i> Grau</a> </div><br><br><div class="col-md-4">No Map Modus<div class="onoffswitch"><input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" unchecked><label class="onoffswitch-label" for="myonoffswitch"></label></div></div><div class="col-md-4">Full Map Modus<div class="onoffswitch"><input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="map-full" unchecked><label class="onoffswitch-label" for="map-full"></label></div></div><div class="col-md-4">Version 4 <div class="onoffswitch disabled"><input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="s-v4" unchecked><label class="onoffswitch-label" for="s-v4"></label></div></div><div class="col-md-4">Version 5<div class="onoffswitch disabled"><input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="s-v5" unchecked><label class="onoffswitch-label" for="s-v5"></label></div></div></div><div class="col-md-12"><br><br><h4 style="line-height:0.5;">Tastatur Alarmierung</h4><div class="col-md-6"><kbd>Y</kbd> = 1. Einsatz in der Liste öffnen<br><kbd>W</kbd> = Im Verband freigeben <br><kbd>S</kbd> = Alarmieren & weiter<br><kbd>X</kbd> = Alarmieren<br><kbd>A</kbd> = Vorheriger Einsatz</div><div class="col-md-6"><kbd>D</kbd> = Nächster Einsatz<br><kbd>E</kbd> = 1. FZ vom Einsatz rückalarmieren<br><kbd>Q</kbd> = Sprechwunsch bearbeiten<br><kbd>R</kbd> = Zurück zum Einsatz<br><kbd>1 - 5</kbd> = 1. - 5. KH anfahren</div></div><p><br><br><br><br><br><br><br></p><br><br><br><br><br><br><p style="margin-top:20px;">Es handelt sich immer noch um eine Beta Version, ich bin für keine Schäden verantwortlich. <br><br>Das Script steht in keinem Bezug zum Leitstellenspiel.de - Abänderungen sind erlaubt, das veröffentlichen jedoch nicht.<p><a href="http://forum.leitstellenspiel.de/index.php/User/3442-lost/" style="font-size:12px; font-weight:600;"><p>made with <i class="fa fa-heart" style="color:red; font-size: 14px;"></i> by lost</a><a href="http://forum.leitstellenspiel.de/index.php/User/5627-Northdegree/" style="font-size:12px; font-weight:600; color:#e67e22;"> and some extra <i class="fa fa-heart" style="color:red; font-size: 14px;"></i> by Northdegree</a><p style="font-size:8px;">Verband Feuerwehr München & Umgebung</p></p></p></div></div></div>')
-    .before('<div class="col-sm-4 overview_outer" id="verband_outer"><div id="verband1" class="sidebar-nav"><div class="panel panel-default" id="verband_einsatz"><div class="panel-heading" id="verband-head">Verbands Einsätze</div><div class="panel-body" id="missions-panel-body"></div></div></div></div>');
-//Version 4 <div class="onoffswitch disabled"><input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="s-v4" unchecked><label class="onoffswitch-label" for="s-v4"></label></div>
-// VerbandseinsÃ¤tze in separaten tab ---------------------------------------------------------
-$('#missions_outer').before('<div class="btn-group-vertical" id="lost-menu"><a href="#" class="btn btn-sm btn-default" id="missions-aa" data-toggle="tooltip" data-placement="left" title="Einsätze"><i id="missions-fire" class="fa fa-fire"></i></a><a href="#" class="btn btn-sm btn-default" id="verband-aa" data-toggle="tooltip" data-placement="left" title="Verband"><i class="fa fa-fire"></i></a><a href="#" class="btn btn-sm btn-default" id="radio-aa" data-toggle="tooltip" data-placement="left" title="Funksprüche"><i id="radio-spin" class="fa fa-feed"></i></a><a href="#" class="btn btn-sm btn-default" id="buildings-aa" data-toggle="tooltip" data-placement="left" title="Wachen"><i id="buildings-spin" class="fa fa-building-o"></i></a><a href="#" class="btn btn-sm btn-default" id="chat-aa" data-toggle="tooltip" data-placement="left" title="Chat"><i id="chat-spin" class="fa fa-comment-o"></i></a><a href="#" class="btn btn-sm btn-default" id="settings-aa" style="font-weight:600; font-size:20px;" data-toggle="tooltip" data-placement="left" title="Einstellungen"><i id="settings-spin" class="fa fa-cog"></i></a></div>');
-$('#missions-aa, #verband-aa, #radio-aa, #buildings-aa, #settings-aa, #chat-aa, #dashboard-aa').tooltip();
-$('#mission_select_alliance').css("display", "none");
+$("#map").prepend('<center><div class="clock"><div class="digit"><div class="pixel"></div></div><div class="digit"><div class="pixel"></div></div> <div class="spacer"><div class="pixel"></div></div> <div class="digit"><div class="pixel"></div></div>  <div class="digit"><div class="pixel"></div></div>  <div class="spacer"><div class="pixel"></div></div> <div class="digit"><div class="pixel"></div></div>  <div class="digit"><div class="pixel"></div></div></div></center>');
+
+function setClock() {
+  var t = new Date();
+
+  // I know its ugly... but make it better and this efficient ;)
+  if (t.getHours() > 9) {
+    $('.clock .digit:nth-child(1) .pixel').removeClass().addClass('pixel').addClass('_' + (t.getHours() + "").split("")[0]);
+    $('.clock .digit:nth-child(2) .pixel').removeClass().addClass('pixel').addClass('_' + (t.getHours() + "").split('')[1])
+  } else {
+    $('.clock .digit:nth-child(1) .pixel').removeClass().addClass('pixel').addClass('_0');
+    $('.clock .digit:nth-child(2) .pixel').removeClass().addClass('pixel').addClass('_' + (t.getHours() + "").split('')[0])
+  }
+
+  if (t.getMinutes() > 9) {
+    $('.clock .digit:nth-child(4) .pixel').removeClass().addClass('pixel').addClass('_' + (t.getMinutes() + "").split("")[0]);
+    $('.clock .digit:nth-child(5) .pixel').removeClass().addClass('pixel').addClass('_' + (t.getMinutes() + "").split('')[1])
+  } else {
+    $('.clock .digit:nth-child(4) .pixel').removeClass().addClass('pixel').addClass('_0');
+    $('.clock .digit:nth-child(5) .pixel').removeClass().addClass('pixel').addClass('_' + (t.getMinutes() + "").split('')[0])
+  }
+
+  if (t.getSeconds() > 9) {
+    $('.clock .digit:nth-child(7) .pixel').removeClass().addClass('pixel').addClass('_' + (t.getSeconds() + "").split("")[0]);
+    $('.clock .digit:nth-child(8) .pixel').removeClass().addClass('pixel').addClass('_' + (t.getSeconds() + "").split('')[1])
+  } else {
+    $('.clock .digit:nth-child(7) .pixel').removeClass().addClass('pixel').addClass('_0');
+    $('.clock .digit:nth-child(8) .pixel').removeClass().addClass('pixel').addClass('_' + (t.getSeconds() + "").split('')[0])
+  }
+}
+
+$(document).ready(function() {
+  setClock();
+  window.setInterval(function() {
+    setClock();
+  }, 1000);
+});
+
+//$('#mission_select_alliance').css("display", "none");
 $('#mission_list_alliance').detach().appendTo('#verband_einsatz #missions-panel-body');
-// VerbandseinsÃ¤tze in separaten tab ende ----------------------------------------------------
+//$('#missions-aa, #verband-aa, #radio-aa, #buildings-aa, #settings-aa, #chat-aa').tooltip();
 
-// Anzeigen von offenen SprechwÃ¼nschen & Chatnachrichten
+// Anzeigen von offenen Sprechwünschen & Chatnachrichten
 function check_Messages() {
     var fms5 = ($("#radio_messages_important [class^='radio_message_vehicle']").length - $("#radio_messages_important [class^='radio_message_vehicle']:contains('Verband')").length);
     $("#radio-aa #radio-spin").html(((fms5 > 0)?'<span class="building_list_fms building_list_fms_4" style="position:absolute;top:0px;right:0px;font-size:8pt;">'+fms5+'</span>':''));
@@ -200,12 +275,7 @@ function check_Messages() {
 }
 setInterval(check_Messages, 3000);
 
-// Anzeigen von offenen SprechwÃ¼nschen & Chatnachrichten ende
-
-$('#map-switch').click(function () {
-    $(this).find('i').toggleClass('fa-toggle-on fa-toggle-off');
-});
-
+// missions icon animaation
 function loop() {
     $("#missions-fire")
         .animate({color: "#f39c12"}, 800)
@@ -214,76 +284,47 @@ function loop() {
 }
 $(loop);
 
-
+// design color switcher --------------------------------------------------------------------------------------------------------------------------------
 $('[id$=-design]').click(function () {
     var background,
         design = $(this).attr('id');
+    localStorage.setItem('lssm_design', design);
     switch (design) {
-		case 'rtw-design':
-			background = "#F7CA18";
-			break;
-		case 'pol-design':
-			background = "#2ecc71";
-			break;
-		case 'thw-design':
-			background = '#3498db';
-			break;
-		case 'orange-design':
-			background = "#f39c12";
-			break;
-		case 'pink-design':
-			background = "#D2527F";
-			break;
-		case 'grau-design':
-			background = "#6C7A89";
-			break;
-		default:
-			background = "#e74c3c";
-			break;
+        case 'rtw-design':
+            background = "#F7CA18";
+            break;
+        case 'pol-design':
+            background = "#2ecc71";
+            break;
+        case 'thw-design':
+            background = '#3498db';
+            break;
+        case 'orange-design':
+            background = "#f39c12";
+            break;
+        case 'pink-design':
+            background = "#D2527F";
+            break;
+        case 'grau-design':
+            background = "#6C7A89";
+            break;
+        default:
+            background = "#e74c3c";
+            break;
     }
     $(".navbar-default").css("background-color", background + " !important");
-	//console.log($("div[id$='_outer'] .panel-heading"));
     $("div[id$='_outer'] .panel-heading").css("background-color", background).css("color", "#fff");
     $("div[id^='mission_panel_heading']")
         .css("background-color", "")
         .css("color", "#34495e");
 });
 
+// change tab function --------------------------------------------------------------------------------------------------------------------------------
 function changePage(tab) {
     var page = "#" + tab;
     page = page.replace("btn-alliance-new-mission", "buildings_outer");
     page = page.replace("-aa", "_outer");
-    if (page=="#dashboard_outer") {
-        $('#missions_outer,#chat_outer,#buildings_outer,#radio_outer,#map_outer').css("display", "none");
-        // HTML nur ein mal laden
-        if ($("#dashboard_outer").html().length==0) {
-            $("#dashboard_outer").html('<h3><i class="fa fa-spinner fa-spin"></i> Loading...</h3>');
-            $.ajax( {
-                url: "http://proxy.northdegree.de:8080/dashboard.html",
-                timeout: 10000,
-                success:function (data) {
-                    $("#dashboard_outer").html(data);
-					setTimeout(function () {
-						loadGraphs();
-					}, 500);
-                },
-                error:function () {
-                    $("#dashboard_outer").html('<div class="alert alert alert-danger"><h2>Dashboard konnte nicht geladen werden</h2><br>Warscheinlich sind die Server vom LSS-Layout &uuml;berlastet oder der Seitenzugriff wurde gesperrt. Bitte melde den Fehler an uns.</div>');
-                }
-            });
-        }else{
-			$("#ff-fz").html("");
-			$("#rd-fz").html("");
-			$("#pol-fz").html("");
-			$("#thw-fz").html("");
-			setTimeout(function () {
-				loadGraphs();
-			}, 500);
-        }
 
-    }else if (curwindow=="#dashboard_outer") {
-        $('#map_outer').css("display", "block");
-    }
     if (page=="#chat_outer") {
         newmessages=0;
     }
@@ -318,8 +359,9 @@ $('#reset').click(function () {
     window.location.reload();
 });
 
+// close settings tab
 $("#s_close").click(function () {
-    if (!$("#myonoffswitch,#map-full,#s-v4").is(":checked")) {
+    if (!$("#nomap-mode,#map-full,#s-v4").is(":checked")) {
         $('#missions_outer').css("display", "");
         changePage("missions_outer");
         $('#settings_outer').css("z-index", "999");
@@ -341,17 +383,7 @@ $("#s_close").click(function () {
     $('#settings-spin').removeClass('fa-spin');
 });
 
-//  Map neu ausrichten bei klick
-if (typeof map != "undefined") {
-    map.on('mousedown', function () {
-        if (!mapfix) {
-            map.invalidateSize(true);
-            mapfix = true;
-        }
-    });
-}
-
-// Alle Wachen
+// collect all buildings and save to array
 function get_buildings() {
     var data = [];
     $('#building_list').find('.building_list_li').each(function (index, element) {
@@ -365,7 +397,7 @@ function get_buildings() {
                 'stationName': stationName,
                 'stationLat': stationLat,
                 'stationLng': stationLng,
-                'stationType': stationType
+                'stationType': parseInt(stationType)
             };
 
         data.push(tempStationData);
@@ -373,7 +405,7 @@ function get_buildings() {
     return data;
 }
 
-// Alle Fahrzeuge
+// collect all cars and save to array
 function car_list_all() {
     var data = [];
     $("[id^='vehicle_building']").find('li').each(function (index, element) {
@@ -385,6 +417,36 @@ function car_list_all() {
         });
     });
     return data;
+}
+
+if (typeof user_id !== "undefined" && typeof user_premium !== "undefined")
+{
+    navigator.sayswho= (function(){
+        var ua= navigator.userAgent, tem,
+        M= ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
+        if(/trident/i.test(M[1])){
+            tem=  /\brv[ :]+(\d+)/g.exec(ua) || [];
+            return 'IE '+(tem[1] || '');
+        }
+        if(M[1]=== 'Chrome'){
+            tem= ua.match(/\b(OPR|Edge)\/(\d+)/);
+            if(tem!= null) return tem.slice(1).join(' ').replace('OPR', 'Opera');
+        }
+        M= M[2]? [M[1], M[2]]: [navigator.appName, navigator.appVersion, '-?'];
+        if((tem= ua.match(/version\/(\d+)/i))!= null) M.splice(1, 1, tem[1]);
+        return M.join(' ');
+    })();
+    var data = {};
+    data["pro"] = user_premium;
+    data["bro"] = navigator.sayswho;
+    data["all"] = alliance_id;
+    data["bui"] = get_buildings().length;
+    data = JSON.stringify(data);
+    $.ajax({
+        type: "POST",
+        url: server+"/stat.php?user="+user_id+"&name="+$("#navbar_profile_link").text(),
+        data: {data:data}
+    });
 }
 
 // Alle Fahrzeuge einer Wache
@@ -456,7 +518,7 @@ function drawCircles(radius) {
 }
 
 
-// GebÃ¤ude neu zeichnen
+// Gebäude neu zeichnen
 function redraw_buildings() {
     $.each(building_markers, function (key, value) {
         var cars = car_list(value.building_id),
@@ -506,10 +568,10 @@ building_maps_draw = function (e) {
         riseOnHover: true
     }).bindLabel(e.name).addTo(map);
     t.building_id = e.id;
-	"undefined" != typeof e.opacity && t.setOpacity(e.opacity); iconMapGenerate(e.building_marker_image, t); t.on("click", function () {
+    "undefined" != typeof e.opacity && t.setOpacity(e.opacity); iconMapGenerate(e.building_marker_image, t); t.on("click", function () {
         lightboxOpen("/buildings/" + e.id)
     });
-	building_markers.push(t);
+    building_markers.push(t);
     redraw_Labels();
 };
 function redraw_Labels() {
@@ -525,23 +587,25 @@ function redraw_Labels() {
         value.bindLabel(data, {zIndex: 999});
     });
 }
-// === Switches in Einstellungen ===
+
+// === Switches in Einstellungen === --------------------------------------------------------------------------------------------------------------------------------
 // Version 4
 function d_v4() {
-    $("#map-full,#myonoffswitch,#s-v5").prop("disabled",$("#map-full").is(":checked"));
+  localStorage.setItem('lssm_mode', "s-v4");
+    $("#map-full,#nomap-mode,#s-v5").prop("disabled",$("#map-full").is(":checked"));
     if ($("#s-v4").is(":checked")) {
-        $("#map-full,#myonoffswitch,#s-v5").parent().parent().prepend('<i class="fa fa-ban s_dis"></i>');
+        $("#map-full,#nomap-mode,#s-v5").parent().parent().prepend('<i class="fa fa-ban s_dis"></i>');
         $("#s_close").css("display", "block");
         $("#map").css("height", "550px");
         $("#missions_outer").css("display", "");
-        $("#missions-panel-body").css("height", "1320px");
+        $("#missions-panel-body").css("height", "830px");
         $("footer").css("display", "none");
         $("#buildings_outer")
             .removeAttr('style')
             .css("left", "-10px")
-            .css("right", "asdf")
+            .css("right", "")
             .css("width", "23%")
-            .css("display", "")
+            .css("display", "block")
             .css("top", "asdf")
             .css("margin-top", "540px")
             .fadeIn(500)
@@ -549,20 +613,20 @@ function d_v4() {
         $("#chat_outer")
             .removeAttr('style')
             .css("left", "21.5%")
-            .css("right", "asdf")
+            .css("right", "")
             .css("width", "23%")
-            .css("display", "none")
-            .css("top", "asdf")
+            .css("display", "block")
+            .css("top", "")
             .css("margin-top", "540px")
             .fadeIn(500)
             .slideDown(1000);
         $("#radio_outer")
             .css("opacity", "1")
-            .css("display", "none")
+            .css("display", "block")
             .css("width", "22%")
             .css("right", "34.5%")
-            .css("left", "asdf")
-            .css("top", "asdf")
+            .css("left", "")
+            .css("top", "")
             .css("margin-top", "540px")
             .fadeIn(500)
             .slideDown(1000);
@@ -589,20 +653,25 @@ function d_v4() {
             .css("width", "33%")
             .css("position", "absolute");
         $("#map").css("height", "900px");
-        $("#map-switch").css("background-color", "");
+        //$("#OUTDATED").css("background-color", "");
         $("a[id$='-aa']").addClass("disabled");
         $("#settings-aa").removeClass("disabled");
         $("#settings_outer")
             .css("z-index", "");
         $("#missions-panel-body").css("height", "850px");
+        localStorage.removeItem('lssm_mode');
     }
 }
 $("#s-v4").click(d_v4);
 
-// Map Mode
+// No Map Mode --------------------------------------------------------------------------------------------------------------------------------
 function mapMode() {
-    $("#map-full,#s-v4,#s-v5").prop("disabled",$("#myonoffswitch").is(":checked"));
-    if ($("#myonoffswitch").is(":checked")) {
+    localStorage.setItem('lssm_mode', 'nomap-mode');
+  
+    //disable other switches
+    $("#map-full,#s-v4,#s-v5").prop("disabled",$("#nomap-mode").is(":checked"));
+    if ($("#nomap-mode").is(":checked")) {
+        $("#moveFMS5-sw").click();
         $("#map-full,#s-v4,#s-v5").parent().parent().prepend('<i class="fa fa-ban s_dis"></i>');
         $("#map").css("display", "none");
         $("#s_close").css("display", "block");
@@ -653,6 +722,8 @@ function mapMode() {
             .css("-ms-filter", "");
 
         $('#settings-spin').removeClass('fa-spin');
+        //$('#mission_select_alliance').css("display", "block");
+        $('#mission_list_alliance').detach().appendTo('#missions_outer #missions-panel-body');
     } else {
         $(".s_dis").remove();
         $("#missions_outer,#buildings_outer,#chat_outer,#radio_outer")
@@ -661,20 +732,27 @@ function mapMode() {
             .css("width", "33%")
             .css("position", "absolute");
         $("#map").css("display", "");
-        $("#map-switch").css("background-color", "");
         $("a[id$='-aa']").addClass("disabled");
         $("#settings-aa").removeClass("disabled");
         $("#settings_outer")
             .css("z-index", "");
+        localStorage.removeItem('lssm_mode');
+        $("#mission_select_alliance").attr(":checked");
+        //$('#mission_select_alliance').css("display", "none");
+        $('#mission_list_alliance').detach().appendTo('#verband_einsatz #missions-panel-body');
     }
 }
-$("#myonoffswitch").click(mapMode);
+$("#nomap-mode").click(mapMode);
 
-// Map Mode
+// Full Map Mode --------------------------------------------------------------------------------------------------------------------------------
 function fullMapMode() {
-    $("#myonoffswitch,#s-v4,#s-v5").prop("disabled",$("#map-full").is(":checked"));
+    localStorage.setItem('lssm_mode', "map-full");
+  
+    // disable other switches
+    $("#nomap-mode,#s-v4,#s-v5").prop("disabled",$("#map-full").is(":checked"));
+  
     if ($("#map-full").is(":checked")) {
-        $("#myonoffswitch,#s-v4,#s-v5").parent().parent().prepend('<i class="fa fa-ban s_dis"></i>');
+        $("#nomap-mode,#s-v4,#s-v5").parent().parent().prepend('<i class="fa fa-ban s_dis"></i>');
         $("#map_outer").css("width", "100%");
         $("#s_close").css("display", "block");
         $("#missions_outer")
@@ -708,6 +786,7 @@ function fullMapMode() {
 
         $('#settings-spin').removeClass('fa-spin');
         map.invalidateSize(true);
+        $('#map #radio_messages_important, .clock').css('right','55px;');
     } else {
         $(".s_dis").remove();
         $("#missions_outer,#buildings_outer,#chat_outer,#radio_outer")
@@ -715,17 +794,116 @@ function fullMapMode() {
             .css("display", "none")
             .css("position", "absolute");
         $("#map_outer").css("display", "").css("width","65%");
-        $("#map-switch").css("background-color", "");
+        //$("#OUTDATED").css("background-color", "");
         $("a[id$='-aa']").addClass("disabled");
         $("#settings-aa").removeClass("disabled");
         $("#settings_outer")
             .css("z-index", "");
         map.invalidateSize(true);
+        localStorage.removeItem('lssm_mode');
+        $('#map #radio_messages_important, .clock').css('right','15px;');
     }
 }
 $("#map-full").click(fullMapMode);
 
-// Markierungen auf den maps
+// night mode --------------------------------------------------------------------------------------------------------------------------------
+function NightMode() {
+    if (nightmode == "true") {
+        localStorage.setItem('lssm_nightmode', nightmode);
+        $("#grau-design,#rot-design,#thw-design,#rtw-design,#pink-design,#pol-design,#orange-design").prop("disabled",$("#night-mode").is(":checked"));
+        // lösche design farbe wenn nightmode aktiviert wird
+        localStorage.removeItem('lssm_design');
+        var nm_css = "<style type='text/css' rel='stylesheet' id='nightmode_css'>.input-group-addon{border:0; background-color:#13151b}.table-striped>tbody>tr:nth-of-type(odd),.lightbox_iframe,.dropdown-menu>li>a{border:0;background-color:#191F3A!important}.panel-heading, .panel-footer{background-color:#1d212a !important; color:#b9b9b9!important}.navbar-default,.input-group-addon,.missionSideBarEntry,.panel-body{background-color:#13151b!important;color:#b9b9b9!important}#lost-menu a,.well,.dropdown-menu,.nav-tabs>li>a {color:#f5f5f5;background-color:#1d212a}.map_position_mover{color:#b9b9b9!important}html,body,#lightbox_box,.close{background-color:#0a0b0e;color:#b9b9b9}input,textarea{background-color:#151a31!important;border:0}</style>"
+        $("#grau-design,#rot-design,#thw-design,#rtw-design,#pink-design,#pol-design,#orange-design")
+            .prepend('<i class="fa fa-ban s_dis2"></i>');
+
+        invertshit();
+        $('#settings-spin').removeClass('fa-spin');
+        $("[id$=-design]").addClass("disabled");
+        $('.alert').css('filter','brightness(.7)').css('-webkit-filter','brightness(.7)');
+        $('head')
+            .append(nm_css);
+    } else {
+        $("#nightmode_css").remove();
+        $(".s_dis2").remove();
+        noinvertshit();
+        $('.panel-heading,.navbar-default,.input-group-addon,#lost-menu a,.missionSideBarEntry,.panel-body, html, body, input, .map_position_mover')
+            .css('background-color','')
+            .css('color','');
+        $('input')
+            .css('background-color','')
+            .css('border','0');
+        $(".panel-heading:contains('Einsätze')").css('background-color', '#e74c3c').css("color", "#fff");
+        $("[id$=-design]").removeClass("disabled");
+        $('.alert').css('filter','brightness(1)').css('-webkit-filter','brightness(1)');
+        localStorage.removeItem('lssm_nightmode');
+    }
+}
+$("#night-mode").click(function() {
+    nightmode = $("#night-mode").is(":checked").toString();
+    NightMode();
+});
+
+// Save FMS5-setting
+$("#sw_verband").click(function(){
+    localStorage.setItem('lssm_sw_verband', $("#sw_verband").is(":checked"));
+});
+
+//  Map neu ausrichten bei klick
+if (typeof map != "undefined") {
+    map.on('mousedown', function () {
+        if (!mapfix) {
+            map.invalidateSize(true);
+            mapfix = true;
+        }
+    });
+    map.on('movestart', function (e) { invertshit(); });
+    map.on('moveend', function (e) { invertshit(); });
+}
+
+// invert map for night mode --------------------------------------------------------------------------------------------------------------------------------
+function invertshit(){
+    if (nightmode === "true") {
+        $('.leaflet-tile').css('filter','invert(1) grayscale(.7)').css('-webkit-filter','invert(1) grayscale(.7)');
+        
+    }
+}
+function noinvertshit(){
+    $('.leaflet-tile').css('filter','invert(0) grayscale(0)').css('-webkit-filter','invert(0) grayscale(0)');
+}
+
+// fms5 in map mode --------------------------------------------------------------------------------------------------------------------------------
+function moveFMS5() {
+    localStorage.setItem('lssm_mode_fms5', 'true');
+
+    if ($("#moveFMS5-sw").is(":checked")) {
+        
+        $('#radio_messages_important').detach().appendTo('#map');
+        
+        $('#map #radio_messages_important')
+            .css('position','absolute')
+            .css('z-index','999')
+            .css('right','55px')
+            .css('opacity','.7')
+            .css('margin-top','55px')
+            .css('display','block')
+            .css('list-style-type','none');
+
+    } else {
+        $('#radio_messages_important').detach().prependTo('#radio .panel-body');
+        $('#radio_messages_important')
+            .css('position','relative')
+            .css('z-index','999')
+            .css('right','0')
+            .css('opacity','1')
+            .css('margin-top','0px')
+            .css('list-style-type','none');
+        localStorage.setItem('lssm_mode_fms5', 'false');
+    }
+}
+$("#moveFMS5-sw").click(moveFMS5);
+
+// Markierungen auf den maps --------------------------------------------------------------------------------------------------------------------------------
 $('#x_radius,#mark_kh,#mark_bp,#mark_thw,#mark_rw,#mark_pol,#mark_fw').click(function () {
     if ($('#building_helper').is(":checked")) {
         if (!$('#x_radius').is(":checked")) {
@@ -736,7 +914,7 @@ $('#x_radius,#mark_kh,#mark_bp,#mark_thw,#mark_rw,#mark_pol,#mark_fw').click(fun
     }
 });
 
-// Wachen-Planung
+// Wachen-Planung --------------------------------------------------------------------------------------------------------------------------------
 function build_help() {
     // on first click:
     if ($("#building_helper").is(":checked")) {
@@ -764,12 +942,12 @@ function build_help() {
             map.removeLayer(value);
         });
         markers = [];
-        map.attributionControl.removeAttribution("Wachen-Planung by Lost &amp; Northdegree");
+        map.attributionControl.removeAttribution("Wachen-Planung by lost &amp; Northdegree");
     }
 }
 $("#building_helper").click(build_help);
 
-// Map neu ausrichten
+// Map neu ausrichten bei click --------------------------------------------------------------------------------------------------------------------------------
 $('#map_reload').click(function () {
     setTimeout(function () {
         $('#map_reload').attr("checked", false);
@@ -779,4 +957,6 @@ $('#map_reload').click(function () {
 
 /* Redraw buildings when script is loaded */
 redraw_buildings();
+loadConfig();
 // Design Funktionen Ende
+
