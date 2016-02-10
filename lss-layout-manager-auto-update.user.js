@@ -19,4 +19,4 @@ if(typeof(jQuery) == 'undefined')
    throw new Error("No jQuery! Aborting!");
 }
 
-$('head').append('<script src="http://proxy.northdegree.de:8080/lss-layout-manager-2.dev.js" type="text/javascript"></script>');
+$('head').append('<script src="http://proxy.lss-manager.de:8080/lss-layout-manager-2.dev.js" type="text/javascript"></script>');
