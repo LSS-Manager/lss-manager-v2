@@ -17,7 +17,7 @@
 
 // set variables and arrays --------------------------------------------------------------------------------------------------------------------------------
 var curwindow = "#missions_outer",
-    server = "http://proxy.northdegree.de/lss", // All files are getting loaded from this server (without ending /)
+    server = "http://proxy.lss-manager.de:8080", // All files are getting loaded from this server (without ending /)
     markers = [],
     mapfix = false,
     nightmode = 'false',
