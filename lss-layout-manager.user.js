@@ -1,8 +1,5 @@
-// =============================================================
-// "alpha.northdegree.de/lss" ersetzen mit "alpha.northdegree.de/lss"
-// =============================================================
 // ==UserScript==
-// @name         LSS Manger 
+// @name         LSS Manger 2.4
 // @namespace    http://www.lss-manager.de
 // @version      2.4
 // @description  Mit der Tastatur Alarmieren oder sonstiges
