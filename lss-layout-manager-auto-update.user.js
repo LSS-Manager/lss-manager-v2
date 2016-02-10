@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         LSS Layout Manger Auto Update
+// @name         LSS Manager AutoUpdate 
 // @namespace    http://www.lss-manager.de
 // @version      2.4
 // @description  Mit der Tastatur Alarmieren oder sonstiges
