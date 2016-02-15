@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         LSS Manager AutoUpdate 
 // @namespace    http://www.lss-manager.de
-// @version      2.4
+// @version      2.5
 // @description  Mit der Tastatur Alarmieren oder sonstiges
 // @author       lost & northdegree
 // @include      http://www.leitstellenspiel.de/
