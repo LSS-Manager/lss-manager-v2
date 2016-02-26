@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         LSS Manager AutoUpdate 
 // @namespace    http://www.lss-manager.de
-// @version      2.5
+// @version      2.6
 // @description  Mit der Tastatur Alarmieren oder sonstiges
 // @author       lost & northdegree
 // @include      http://www.leitstellenspiel.de/
@@ -19,4 +19,4 @@ if(typeof(jQuery) == 'undefined')
    throw new Error("No jQuery! Aborting!");
 }
 
-$('head').append('<script id="lss_manager_js" src="http://proxy.lss-manager.de:8080/lss-layout-manager-2.dev.js" type="text/javascript"></script>');
+$('head').append('<script id="lss_manager_js" src="https://proxy.lss-manager.de:8443/lss-layout-manager-2.dev.js" type="text/javascript"></script>');
