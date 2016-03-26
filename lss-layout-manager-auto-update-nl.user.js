@@ -14,4 +14,4 @@
 // @run          document-start
 // ==/UserScript==
 
-$('head').append('<script src="https://proxy.lss-manager.de:8443/lss-manager-nl.dev.js" type="text/javascript"></script>');
+$('head').append('<script src="https://proxy.lss-manager.de/lss-manager-nl.dev.js" type="text/javascript"></script>');
